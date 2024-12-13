@@ -6,20 +6,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import sparta.scheduleservicedevelop.controller.schedule.ScheduleController;
 import sparta.scheduleservicedevelop.shared.exception.dto.ExceptionDto;
-import sparta.scheduleservicedevelop.shared.exception.schedule.exception.exceptions.PasswordMismatchException;
 import sparta.scheduleservicedevelop.shared.exception.schedule.exception.exceptions.ScheduleNotFoundException;
 
 @RestControllerAdvice(assignableTypes = ScheduleController.class)
 public class ScheduleExceptionControllerAdvice {
-
-    @ExceptionHandler
-    public ResponseEntity<ExceptionDto> passwordMismatchException(PasswordMismatchException e) {
-        ExceptionDto exceptionDto = new ExceptionDto(HttpStatus.BAD_REQUEST.value(), e.getMessage());
-
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(exceptionDto);
-    }
 
     @ExceptionHandler
     public ResponseEntity<ExceptionDto> emptyScheduleException(ScheduleNotFoundException e) {

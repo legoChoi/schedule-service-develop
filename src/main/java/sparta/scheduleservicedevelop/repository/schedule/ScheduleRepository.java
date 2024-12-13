@@ -10,6 +10,5 @@ public interface ScheduleRepository {
     Schedule save(Schedule schedule);
     Optional<Schedule> fetchOneById(Long id);
     List<Schedule> fetchAll();
-
     void delete(Schedule schedule);
 }

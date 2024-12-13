@@ -4,7 +4,6 @@ import lombok.Getter;
 
 @Getter
 public class UpdateScheduleReqDto {
-    private String writer;
     private String title;
     private String contents;
 }
