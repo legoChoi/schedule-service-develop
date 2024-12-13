@@ -3,7 +3,7 @@ package sparta.scheduleservicedevelop.shared.exception.user.advice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import sparta.scheduleservicedevelop.controller.user.UserController;
+import sparta.scheduleservicedevelop.apis.controller.user.UserController;
 import sparta.scheduleservicedevelop.shared.exception.dto.ExceptionDto;
 import sparta.scheduleservicedevelop.shared.exception.user.exception.AlreadyExistsUserEmailException;
 import sparta.scheduleservicedevelop.shared.exception.user.exception.UserPasswordMismatchException;

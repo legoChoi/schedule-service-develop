@@ -3,7 +3,7 @@ package sparta.scheduleservicedevelop.shared.exception.schedule.advice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import sparta.scheduleservicedevelop.controller.schedule.ScheduleController;
+import sparta.scheduleservicedevelop.apis.controller.schedule.ScheduleController;
 import sparta.scheduleservicedevelop.shared.exception.dto.ExceptionDto;
 import sparta.scheduleservicedevelop.shared.exception.schedule.exception.ScheduleNotFoundException;
 
