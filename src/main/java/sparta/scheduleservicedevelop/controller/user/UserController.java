@@ -1,6 +1,7 @@
 package sparta.scheduleservicedevelop.controller.user;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -90,6 +91,21 @@ public class UserController {
         User login = this.userService.login(user);
 
         request.getSession().setAttribute(SessionNames.LOGIN_USER.getName(), login);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .build();
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(
+            HttpServletRequest request
+    ) {
+        HttpSession session = request.getSession(false);
+
+        if (session != null) {
+            session.invalidate();
+        }
 
         return ResponseEntity
                 .status(HttpStatus.OK)
