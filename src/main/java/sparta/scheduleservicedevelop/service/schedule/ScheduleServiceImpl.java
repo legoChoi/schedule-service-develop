@@ -39,7 +39,6 @@ public class ScheduleServiceImpl implements ScheduleService {
         Schedule schedule = this.scheduleRepository.fetchOneById(scheduleId)
                 .orElseThrow(ScheduleNotFoundException::new);
 
-        schedule.setWriter(updateScheduleReqDto.getWriter());
         schedule.setTitle(updateScheduleReqDto.getTitle());
         schedule.setContents(updateScheduleReqDto.getContents());
     }

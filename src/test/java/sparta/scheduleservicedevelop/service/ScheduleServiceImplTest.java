@@ -12,7 +12,6 @@ import sparta.scheduleservicedevelop.service.schedule.ScheduleService;
 import sparta.scheduleservicedevelop.shared.exception.schedule.exception.exceptions.ScheduleNotFoundException;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -25,16 +24,16 @@ class ScheduleServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        this.scheduleService.save(new Schedule("t1", "title", "contents"));
-        this.scheduleService.save(new Schedule("t2", "title", "contents"));
-        this.scheduleService.save(new Schedule("t3", "title", "contents"));
-        this.scheduleService.save(new Schedule("t4", "title", "contents"));
-        this.scheduleService.save(new Schedule("t5", "title", "contents"));
+        this.scheduleService.save(new Schedule("title", "contents"));
+        this.scheduleService.save(new Schedule("title", "contents"));
+        this.scheduleService.save(new Schedule("title", "contents"));
+        this.scheduleService.save(new Schedule("title", "contents"));
+        this.scheduleService.save(new Schedule("title", "contents"));
     }
 
     @Test
     void save() {
-        Schedule schedule = new Schedule("test", "title", "contents");
+        Schedule schedule = new Schedule("title", "contents");
         Schedule savedSchedule = this.scheduleService.save(schedule);
 
         assertThat(schedule).isEqualTo(savedSchedule);
@@ -42,7 +41,7 @@ class ScheduleServiceImplTest {
 
     @Test
     void find() {
-        Schedule savedSchedule = this.scheduleService.save(new Schedule("t6", "title", "contents"));
+        Schedule savedSchedule = this.scheduleService.save(new Schedule("title", "contents"));
         Schedule findSchedule = this.scheduleService.findOneById(savedSchedule.getId());
 
         assertThat(savedSchedule).isEqualTo(findSchedule);

@@ -13,26 +13,21 @@ public class Schedule extends BaseTimeEntity {
     @Column(name = "schedule_id")
     private Long id;
 
-    @Column(length = 4)
-    private String writer;
-
     @Column(length = 10)
     private String title;
 
     @Column(length = 200)
     private String contents;
 
-    protected Schedule() {
-    }
+    @ManyToOne()
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    public Schedule(String writer, String title, String contents) {
-        this.writer = writer;
+    protected Schedule() {}
+
+    public Schedule(String title, String contents) {
         this.title = title;
         this.contents = contents;
-    }
-
-    public void setWriter(String writer) {
-        this.writer = writer;
     }
 
     public void setTitle(String title) {

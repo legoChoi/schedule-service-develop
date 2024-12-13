@@ -26,7 +26,6 @@ public class ScheduleController {
             @RequestBody CreateScheduleReqDto createScheduleReqDto) {
 
         Schedule schedule = new Schedule(
-                createScheduleReqDto.getWriter(),
                 createScheduleReqDto.getTitle(),
                 createScheduleReqDto.getContents()
         );
@@ -35,7 +34,6 @@ public class ScheduleController {
 
         CreateScheduleResDto data = new CreateScheduleResDto(
                 savedSchedule.getId(),
-                savedSchedule.getWriter(),
                 savedSchedule.getTitle(),
                 savedSchedule.getContents(),
                 savedSchedule.getCreatedAt(),
@@ -55,7 +53,6 @@ public class ScheduleController {
 
         FetchScheduleResDto data = new FetchScheduleResDto(
                 schedule.getId(),
-                schedule.getWriter(),
                 schedule.getTitle(),
                 schedule.getContents(),
                 schedule.getCreatedAt(),
@@ -74,7 +71,6 @@ public class ScheduleController {
         List<FetchScheduleResDto> list = data.stream()
                 .map(m -> new FetchScheduleResDto(
                         m.getId(),
-                        m.getWriter(),
                         m.getTitle(),
                         m.getContents(),
                         m.getCreatedAt(),
