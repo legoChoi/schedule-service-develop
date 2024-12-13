@@ -3,12 +3,11 @@ package sparta.scheduleservicedevelop.service.user;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import sparta.scheduleservicedevelop.entity.User;
 import sparta.scheduleservicedevelop.repository.user.UserRepository;
-import sparta.scheduleservicedevelop.shared.exception.user.exception.exceptions.AlreadyExistsUserEmailException;
-import sparta.scheduleservicedevelop.shared.exception.user.exception.exceptions.UserNotFoundException;
-import sparta.scheduleservicedevelop.shared.exception.user.exception.exceptions.UserPasswordMismatchException;
+import sparta.scheduleservicedevelop.shared.exception.user.exception.AlreadyExistsUserEmailException;
+import sparta.scheduleservicedevelop.shared.exception.user.exception.UserNotFoundException;
+import sparta.scheduleservicedevelop.shared.exception.user.exception.UserPasswordMismatchException;
 
 import java.util.Optional;
 
