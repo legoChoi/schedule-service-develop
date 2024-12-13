@@ -2,6 +2,7 @@ package sparta.scheduleservicedevelop.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 import sparta.scheduleservicedevelop.shared.entity.BaseTimeEntity;
 
 @Getter
@@ -10,31 +11,25 @@ import sparta.scheduleservicedevelop.shared.entity.BaseTimeEntity;
 public class Schedule extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "schedule_id")
+    @Column(name = "schedule_id", nullable = false)
     private Long id;
 
-    @Column(length = 10)
+    @Setter
+    @Column(length = 10, nullable = false)
     private String title;
 
-    @Column(length = 200)
+    @Setter
+    @Column(length = 200, nullable = false)
     private String contents;
 
     @ManyToOne()
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     protected Schedule() {}
 
     public Schedule(String title, String contents) {
         this.title = title;
-        this.contents = contents;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setContents(String contents) {
         this.contents = contents;
     }
 }
