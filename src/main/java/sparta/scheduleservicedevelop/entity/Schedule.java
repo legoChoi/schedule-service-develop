@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import sparta.scheduleservicedevelop.shared.entity.BaseTimeEntity;
 
+import java.util.List;
+
 @Getter
 @Entity
 @Table(name = "schedules")
@@ -26,9 +28,12 @@ public class Schedule extends BaseTimeEntity {
     private String contents;
 
     @Setter
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @OneToMany(mappedBy = "schedule")
+    private List<Comment> commentList;
 
     public Schedule(String title, String contents) {
         this.title = title;
