@@ -9,7 +9,8 @@ import java.time.LocalDateTime;
 @Getter @Setter
 @AllArgsConstructor
 public class CreateScheduleResDto {
-    private Long id;
+    private Long scheduleId;
+    private Long userId;
     private String title;
     private String contents;
     private LocalDateTime createdAt;

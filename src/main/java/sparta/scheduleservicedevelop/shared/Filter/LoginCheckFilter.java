@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.PatternMatchUtils;
 import sparta.scheduleservicedevelop.shared.exception.auth.exception.NotAuthenticatedException;
-import sparta.scheduleservicedevelop.shared.session.SessionNames;
+import sparta.scheduleservicedevelop.shared.session.SessionTags;
 
 import java.io.IOException;
 
@@ -40,7 +40,7 @@ public class LoginCheckFilter implements Filter {
     private void validateSession(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
 
-        if (session == null || session.getAttribute(SessionNames.LOGIN_USER.getTag()) == null) {
+        if (session == null || session.getAttribute(SessionTags.LOGIN_USER.getTag()) == null) {
             throw new NotAuthenticatedException();
         }
     }

@@ -1,10 +1,13 @@
 package sparta.scheduleservicedevelop.entity;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import sparta.scheduleservicedevelop.shared.entity.BaseTimeEntity;
 
 @Entity
 @Table(name = "comments")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Comment extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

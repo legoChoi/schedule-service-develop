@@ -15,7 +15,7 @@ import sparta.scheduleservicedevelop.apis.controller.user.dto.response.CreateUse
 import sparta.scheduleservicedevelop.apis.controller.user.dto.response.FetchUserResDto;
 import sparta.scheduleservicedevelop.entity.User;
 import sparta.scheduleservicedevelop.apis.service.user.UserService;
-import sparta.scheduleservicedevelop.shared.session.SessionNames;
+import sparta.scheduleservicedevelop.shared.session.SessionTags;
 
 @Slf4j
 @RestController
@@ -86,7 +86,7 @@ public class UserController {
             HttpServletRequest request
     ) {
         HttpSession session = request.getSession();
-        Long userId = (Long) session.getAttribute(SessionNames.LOGIN_USER.getTag());
+        Long userId = (Long) session.getAttribute(SessionTags.LOGIN_USER.getTag());
         User updateUser = new User(updateUserReqDto.getUserName());
 
         this.userService.updateUser(userId, updateUser);
@@ -108,7 +108,7 @@ public class UserController {
 
         User login = this.userService.login(user);
 
-        request.getSession().setAttribute(SessionNames.LOGIN_USER.getTag(), login.getId());
+        request.getSession().setAttribute(SessionTags.LOGIN_USER.getTag(), login.getId());
 
         return ResponseEntity
                 .status(HttpStatus.OK)

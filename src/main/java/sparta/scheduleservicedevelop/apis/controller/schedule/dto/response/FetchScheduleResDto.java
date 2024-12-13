@@ -8,7 +8,8 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 public class FetchScheduleResDto {
-    private Long id;
+    private Long scheduleId;
+    private Long userId;
     private String title;
     private String contents;
     private LocalDateTime createdAt;
