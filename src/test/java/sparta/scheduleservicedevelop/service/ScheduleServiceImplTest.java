@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import sparta.scheduleservicedevelop.entity.Schedule;
-import sparta.scheduleservicedevelop.repository.schedule.ScheduleRepository;
-import sparta.scheduleservicedevelop.service.schedule.ScheduleService;
+import sparta.scheduleservicedevelop.apis.repository.schedule.ScheduleRepository;
+import sparta.scheduleservicedevelop.apis.service.schedule.ScheduleService;
 import sparta.scheduleservicedevelop.shared.exception.schedule.exception.ScheduleNotFoundException;
 
 import java.util.List;
