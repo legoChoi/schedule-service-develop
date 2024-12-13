@@ -1,15 +1,19 @@
 package sparta.scheduleservicedevelop.controller.user;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sparta.scheduleservicedevelop.controller.user.dto.request.CreateUserReqDto;
+import sparta.scheduleservicedevelop.controller.user.dto.request.LoginUserReqDto;
 import sparta.scheduleservicedevelop.controller.user.dto.response.CreateUserResDto;
 import sparta.scheduleservicedevelop.controller.user.dto.response.FetchUserResDto;
 import sparta.scheduleservicedevelop.entity.User;
 import sparta.scheduleservicedevelop.service.user.UserService;
 
+@Slf4j
 @RestController
 @RequestMapping("/apis/users")
 @RequiredArgsConstructor
@@ -66,6 +70,22 @@ public class UserController {
             @PathVariable("userId") Long userId
     ) {
         this.userService.delete(userId);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .build();
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Void> login(
+            @RequestBody LoginUserReqDto loginUserReqDto
+    ) {
+        User user = new User(
+                loginUserReqDto.getPassword(),
+                loginUserReqDto.getEmail()
+        );
+
+        User login = this.userService.login(user);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
