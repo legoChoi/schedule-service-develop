@@ -12,6 +12,7 @@ import sparta.scheduleservicedevelop.controller.user.dto.response.CreateUserResD
 import sparta.scheduleservicedevelop.controller.user.dto.response.FetchUserResDto;
 import sparta.scheduleservicedevelop.entity.User;
 import sparta.scheduleservicedevelop.service.user.UserService;
+import sparta.scheduleservicedevelop.shared.session.SessionNames;
 
 @Slf4j
 @RestController
@@ -78,7 +79,8 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<Void> login(
-            @RequestBody LoginUserReqDto loginUserReqDto
+            @RequestBody LoginUserReqDto loginUserReqDto,
+            HttpServletRequest request
     ) {
         User user = new User(
                 loginUserReqDto.getPassword(),
@@ -86,6 +88,8 @@ public class UserController {
         );
 
         User login = this.userService.login(user);
+
+        request.getSession().setAttribute(SessionNames.LOGIN_USER.getName(), login);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
