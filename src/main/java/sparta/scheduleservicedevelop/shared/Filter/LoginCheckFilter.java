@@ -13,27 +13,35 @@ import java.io.IOException;
 @Slf4j
 public class LoginCheckFilter implements Filter {
 
-    private final String[] whiteList = {
+    private final String[] uriWhiteList = {
             "/apis/users", // 유저 가입
             "/apis/users/login", // 로그인
-            "/apis/users/logout" // 로그아웃
+            "/apis/users/logout", // 로그아웃
+    };
+
+    private final String[] methodWhiteList = {
+            "PATCH",
     };
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String requestURI = request.getRequestURI();
+        String httpMethod = request.getMethod();
 
-        log.info("requestURI: [{}]", requestURI);
-
-        if (!PatternMatchUtils.simpleMatch(whiteList, requestURI)) {
-            HttpSession session = request.getSession(false);
-
-            if (session == null || session.getAttribute(SessionNames.LOGIN_USER.getTag()) == null) {
-                throw new NotAuthenticatedException();
-            }
+        if (!PatternMatchUtils.simpleMatch(uriWhiteList, requestURI)
+                || PatternMatchUtils.simpleMatch(methodWhiteList, httpMethod)) {
+            validateSession(request);
         }
 
         filterChain.doFilter(servletRequest, servletResponse);
+    }
+
+    private void validateSession(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+
+        if (session == null || session.getAttribute(SessionNames.LOGIN_USER.getTag()) == null) {
+            throw new NotAuthenticatedException();
+        }
     }
 }
