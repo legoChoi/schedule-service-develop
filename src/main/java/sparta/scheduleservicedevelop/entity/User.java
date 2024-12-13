@@ -2,6 +2,7 @@ package sparta.scheduleservicedevelop.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 import sparta.scheduleservicedevelop.shared.entity.BaseTimeEntity;
 
 @Getter
@@ -13,6 +14,7 @@ public class User extends BaseTimeEntity {
     @Column(name = "user_id")
     private Long id;
 
+    @Setter
     @Column(length = 4)
     private String userName;
 

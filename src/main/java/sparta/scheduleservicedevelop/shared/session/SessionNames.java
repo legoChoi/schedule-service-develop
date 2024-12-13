@@ -8,6 +8,5 @@ import lombok.RequiredArgsConstructor;
 public enum SessionNames {
     LOGIN_USER("login_user");
 
-    private final String name;
-
+    private final String tag;
 }

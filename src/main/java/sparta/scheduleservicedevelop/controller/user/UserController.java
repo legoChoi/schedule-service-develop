@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sparta.scheduleservicedevelop.controller.user.dto.request.CreateUserReqDto;
 import sparta.scheduleservicedevelop.controller.user.dto.request.LoginUserReqDto;
+import sparta.scheduleservicedevelop.controller.user.dto.request.UpdateUserReqDto;
 import sparta.scheduleservicedevelop.controller.user.dto.response.CreateUserResDto;
 import sparta.scheduleservicedevelop.controller.user.dto.response.FetchUserResDto;
 import sparta.scheduleservicedevelop.entity.User;
@@ -78,6 +79,23 @@ public class UserController {
                 .build();
     }
 
+    @PatchMapping
+    public ResponseEntity<Void> updateUser(
+            @RequestBody UpdateUserReqDto updateUserReqDto,
+            HttpServletRequest request
+    ) {
+        HttpSession session = request.getSession();
+        User loginUser = (User) session.getAttribute(SessionNames.LOGIN_USER.getTag());
+
+        loginUser.setUserName(updateUserReqDto.getUserName());
+
+        this.userService.updateUser(loginUser);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .build();
+    }
+
     @PostMapping("/login")
     public ResponseEntity<Void> login(
             @RequestBody LoginUserReqDto loginUserReqDto,
@@ -90,7 +108,7 @@ public class UserController {
 
         User login = this.userService.login(user);
 
-        request.getSession().setAttribute(SessionNames.LOGIN_USER.getName(), login);
+        request.getSession().setAttribute(SessionNames.LOGIN_USER.getTag(), login);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

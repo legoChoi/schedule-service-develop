@@ -29,7 +29,7 @@ public class LoginCheckFilter implements Filter {
         if (!PatternMatchUtils.simpleMatch(whiteList, requestURI)) {
             HttpSession session = request.getSession(false);
 
-            if (session == null || session.getAttribute(SessionNames.LOGIN_USER.getName()) == null) {
+            if (session == null || session.getAttribute(SessionNames.LOGIN_USER.getTag()) == null) {
                 throw new NotAuthenticatedException();
             }
         }
