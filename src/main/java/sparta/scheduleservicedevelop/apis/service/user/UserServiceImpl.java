@@ -4,10 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sparta.scheduleservicedevelop.entity.User;
-import sparta.scheduleservicedevelop.apis.repository.user.UserRepository;
 import sparta.scheduleservicedevelop.shared.exception.user.exception.AlreadyExistsUserEmailException;
+import sparta.scheduleservicedevelop.apis.repository.user.UserRepository;
 import sparta.scheduleservicedevelop.shared.exception.user.exception.UserNotFoundException;
 import sparta.scheduleservicedevelop.shared.exception.user.exception.UserPasswordMismatchException;
+import sparta.scheduleservicedevelop.shared.tools.bcrypt.Encoder;
 
 import java.util.Optional;
 
@@ -17,6 +18,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final Encoder passwordEncoder;
 
     @Override
     public User save(User user) {
@@ -27,8 +29,17 @@ public class UserServiceImpl implements UserService {
             throw new AlreadyExistsUserEmailException();
         }
 
+        String rawPassword = user.getPassword();
+        String encodedPassword = passwordEncoder.encode(rawPassword);
+
+        User createdUser = new User(
+                user.getUserName(),
+                encodedPassword,
+                user.getEmail()
+        );
+
         // 생성
-        return this.userRepository.save(user);
+        return this.userRepository.save(createdUser);
     }
 
     @Override
@@ -41,6 +52,7 @@ public class UserServiceImpl implements UserService {
     public void delete(Long id) {
         User user = this.userRepository.findById(id)
                 .orElseThrow(UserNotFoundException::new);
+
         this.userRepository.delete(user);
     }
 
@@ -57,7 +69,7 @@ public class UserServiceImpl implements UserService {
         User findUser = checkUser.get();
 
         // 비밀번호 검증
-        if (!user.getPassword().equals(findUser.getPassword())) {
+        if (!this.passwordEncoder.matches(user.getPassword(), findUser.getPassword())) {
             throw new UserPasswordMismatchException();
         }
 
