@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sparta.scheduleservicedevelop.entity.Schedule;
 import sparta.scheduleservicedevelop.repository.schedule.ScheduleRepository;
 import sparta.scheduleservicedevelop.service.schedule.ScheduleService;
-import sparta.scheduleservicedevelop.shared.exception.schedule.exception.exceptions.ScheduleNotFoundException;
+import sparta.scheduleservicedevelop.shared.exception.schedule.exception.ScheduleNotFoundException;
 
 import java.util.List;
 
