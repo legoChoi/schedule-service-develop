@@ -2,6 +2,7 @@ package sparta.scheduleservicedevelop.controller.user;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<CreateUserResDto> createUser(
-            @RequestBody CreateUserReqDto createUserReqDto
+            @Valid @RequestBody CreateUserReqDto createUserReqDto
     ) {
         User user = new User(
                 createUserReqDto.getUserName(),
