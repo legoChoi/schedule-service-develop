@@ -65,10 +65,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(User user) {
-        User findUser = this.userRepository.findById(user.getId())
+    public void updateUser(Long id, User updateUser) {
+        User findUser = this.userRepository.findById(id)
                 .orElseThrow(UserNotFoundException::new);
 
-        findUser.setUserName(user.getUserName());
+        findUser.setUserName(updateUser.getUserName());
     }
 }

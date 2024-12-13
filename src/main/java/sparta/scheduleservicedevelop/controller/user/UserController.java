@@ -85,11 +85,10 @@ public class UserController {
             HttpServletRequest request
     ) {
         HttpSession session = request.getSession();
-        User loginUser = (User) session.getAttribute(SessionNames.LOGIN_USER.getTag());
+        Long userId = (Long) session.getAttribute(SessionNames.LOGIN_USER.getTag());
+        User updateUser = new User(updateUserReqDto.getUserName());
 
-        loginUser.setUserName(updateUserReqDto.getUserName());
-
-        this.userService.updateUser(loginUser);
+        this.userService.updateUser(userId, updateUser);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -108,7 +107,7 @@ public class UserController {
 
         User login = this.userService.login(user);
 
-        request.getSession().setAttribute(SessionNames.LOGIN_USER.getTag(), login);
+        request.getSession().setAttribute(SessionNames.LOGIN_USER.getTag(), login.getId());
 
         return ResponseEntity
                 .status(HttpStatus.OK)

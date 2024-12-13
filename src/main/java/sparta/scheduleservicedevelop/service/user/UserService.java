@@ -7,5 +7,5 @@ public interface UserService {
     User findById(Long id);
     void delete(Long id);
     User login(User user);
-    void updateUser(User user);
+    void updateUser(Long id, User updateUser);
 }
