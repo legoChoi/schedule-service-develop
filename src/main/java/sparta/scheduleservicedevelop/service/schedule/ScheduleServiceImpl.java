@@ -6,10 +6,9 @@ import org.springframework.transaction.annotation.Transactional;
 import sparta.scheduleservicedevelop.controller.schedule.dto.request.UpdateScheduleReqDto;
 import sparta.scheduleservicedevelop.entity.Schedule;
 import sparta.scheduleservicedevelop.repository.schedule.ScheduleRepository;
-import sparta.scheduleservicedevelop.shared.exception.schedule.exception.exceptions.ScheduleNotFoundException;
+import sparta.scheduleservicedevelop.shared.exception.schedule.exception.ScheduleNotFoundException;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional

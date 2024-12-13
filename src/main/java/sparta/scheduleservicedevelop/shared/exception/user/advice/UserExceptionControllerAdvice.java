@@ -1,42 +1,41 @@
 package sparta.scheduleservicedevelop.shared.exception.user.advice;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import sparta.scheduleservicedevelop.controller.user.UserController;
 import sparta.scheduleservicedevelop.shared.exception.dto.ExceptionDto;
-import sparta.scheduleservicedevelop.shared.exception.user.exception.exceptions.AlreadyExistsUserEmailException;
-import sparta.scheduleservicedevelop.shared.exception.user.exception.exceptions.UserPasswordMismatchException;
-import sparta.scheduleservicedevelop.shared.exception.user.exception.exceptions.UserNotFoundException;
+import sparta.scheduleservicedevelop.shared.exception.user.exception.AlreadyExistsUserEmailException;
+import sparta.scheduleservicedevelop.shared.exception.user.exception.UserPasswordMismatchException;
+import sparta.scheduleservicedevelop.shared.exception.user.exception.UserNotFoundException;
 
 @RestControllerAdvice(assignableTypes = UserController.class)
 public class UserExceptionControllerAdvice {
 
     @ExceptionHandler
     public ResponseEntity<ExceptionDto> userPasswordMismatchException(UserPasswordMismatchException e) {
-        ExceptionDto exceptionDto = new ExceptionDto(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
+        ExceptionDto exceptionDto = new ExceptionDto(e.getErrorCode(), e.getMessage());
 
         return ResponseEntity
-                .status(HttpStatus.UNAUTHORIZED)
+                .status(e.getErrorCode())
                 .body(exceptionDto);
     }
 
     @ExceptionHandler
     public ResponseEntity<ExceptionDto> userNotFoundException(UserNotFoundException e) {
-        ExceptionDto exceptionDto = new ExceptionDto(HttpStatus.NOT_FOUND.value(), e.getMessage());
+        ExceptionDto exceptionDto = new ExceptionDto(e.getErrorCode(), e.getMessage());
 
         return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
+                .status(e.getErrorCode())
                 .body(exceptionDto);
     }
 
     @ExceptionHandler
     public ResponseEntity<ExceptionDto> alreadyExistsUserEmailException(AlreadyExistsUserEmailException e) {
-        ExceptionDto exceptionDto = new ExceptionDto(HttpStatus.CONFLICT.value(), e.getMessage());
+        ExceptionDto exceptionDto = new ExceptionDto(e.getErrorCode(), e.getMessage());
 
         return ResponseEntity
-                .status(HttpStatus.CONFLICT)
+                .status(e.getErrorCode())
                 .body(exceptionDto);
     }
 }

@@ -10,7 +10,7 @@ import sparta.scheduleservicedevelop.shared.exception.dto.ValidFieldErrorDto;
 import java.util.List;
 
 @RestControllerAdvice
-public class ValidExceptionControllerAdvice {
+public class GlobalExceptionControllerAdvice {
 
     @ExceptionHandler
     public ResponseEntity<ValidExceptionDto> checkValidRequestArgs(MethodArgumentNotValidException e) {

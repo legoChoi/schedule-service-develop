@@ -23,8 +23,8 @@ public class ScheduleController {
 
     @PostMapping
     public ResponseEntity<CreateScheduleResDto> createSchedule(
-            @RequestBody CreateScheduleReqDto createScheduleReqDto) {
-
+            @RequestBody CreateScheduleReqDto createScheduleReqDto
+    ) {
         Schedule schedule = new Schedule(
                 createScheduleReqDto.getTitle(),
                 createScheduleReqDto.getContents()
@@ -89,7 +89,6 @@ public class ScheduleController {
             @PathVariable("scheduleId") Long scheduleId,
             UpdateScheduleReqDto updateScheduleReqDto
     ) {
-
         this.scheduleService.updateById(scheduleId, updateScheduleReqDto);
 
         return ResponseEntity
@@ -101,7 +100,6 @@ public class ScheduleController {
     public ResponseEntity<Void> deleteSchedule(
             @PathVariable("scheduleId") Long scheduleId
     ) {
-
         this.scheduleService.deleteById(scheduleId);
 
         return ResponseEntity

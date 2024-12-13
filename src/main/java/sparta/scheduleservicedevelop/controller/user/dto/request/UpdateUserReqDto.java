@@ -3,8 +3,6 @@ package sparta.scheduleservicedevelop.controller.user.dto.request;
 import lombok.Getter;
 
 @Getter
-public class CreateUserReqDto {
+public class UpdateUserReqDto {
     private String userName;
-    private String email;
-    private String password;
 }
