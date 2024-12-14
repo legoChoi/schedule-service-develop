@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface ScheduleRepository {
     Schedule save(Schedule schedule);
-    Optional<Schedule> fetchOneById(Long id);
-    List<Schedule> fetchAll();
+    Optional<Schedule> findById(Long id);
+    List<Schedule> findAll();
     void delete(Schedule schedule);
 }

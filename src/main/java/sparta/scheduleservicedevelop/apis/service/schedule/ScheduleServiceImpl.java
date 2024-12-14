@@ -31,18 +31,18 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public Schedule findOneById(Long id) {
-        return this.scheduleRepository.fetchOneById(id)
+        return this.scheduleRepository.findById(id)
                 .orElseThrow(ScheduleNotFoundException::new);
     }
 
     @Override
     public List<Schedule> findAll() {
-        return this.scheduleRepository.fetchAll();
+        return this.scheduleRepository.findAll();
     }
 
     @Override
     public void updateById(Long scheduleId, UpdateScheduleReqDto updateScheduleReqDto) {
-        Schedule schedule = this.scheduleRepository.fetchOneById(scheduleId)
+        Schedule schedule = this.scheduleRepository.findById(scheduleId)
                 .orElseThrow(ScheduleNotFoundException::new);
 
         schedule.setTitle(updateScheduleReqDto.getTitle());
@@ -51,7 +51,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public void deleteById(Long scheduleId) {
-        Schedule schedule = this.scheduleRepository.fetchOneById(scheduleId)
+        Schedule schedule = this.scheduleRepository.findById(scheduleId)
                 .orElseThrow(ScheduleNotFoundException::new);
 
         this.scheduleRepository.delete(schedule);

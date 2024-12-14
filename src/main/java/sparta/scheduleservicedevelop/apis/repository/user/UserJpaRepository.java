@@ -28,7 +28,7 @@ public class UserJpaRepository implements UserRepository {
     @Override
     public Optional<User> findByEmail(String email) {
         String jpql = "SELECT u FROM User u WHERE u.email = :email";
-        List<User> users = entityManager.createQuery(jpql, User.class)
+        List<User> users = this.entityManager.createQuery(jpql, User.class)
                 .setParameter("email", email)
                 .getResultList();
 

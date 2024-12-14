@@ -21,12 +21,12 @@ public class ScheduleJpaRepository implements ScheduleRepository {
     }
 
     @Override
-    public Optional<Schedule> fetchOneById(Long id) {
+    public Optional<Schedule> findById(Long id) {
         return Optional.ofNullable(this.entityManager.find(Schedule.class, id));
     }
 
     @Override
-    public List<Schedule> fetchAll() {
+    public List<Schedule> findAll() {
         return this.entityManager.createQuery("SELECT s FROM Schedule s", Schedule.class)
                 .getResultList();
     }
