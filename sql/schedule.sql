@@ -13,7 +13,7 @@ create table SCHEDULES (
 -- lv2 유저, 일정 테이블
 create table USERS (
     user_id BIGINT AUTO_INCREMENT,
-    user_name VARCHAR(4) NOT NULL,
+    user_name VARCHAR(10) NOT NULL,
     user_email VARCHAR(50) UNIQUE NOT NULL,
     password VARCHAR(100) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -30,4 +30,17 @@ create table SCHEDULES (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY(schedule_id),
     FOREIGN KEY(user_id) REFERENCES USERS(user_id) ON DELETE CASCADE
+);
+--
+-- lv7 댓글 테이블
+create table COMMENTS (
+    comment_id BIGINT AUTO_INCREMENT,
+    user_id BIGINT,
+    schedule_id BIGINT,
+    contents VARCHAR(100) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY(comment_id),
+    FOREIGN KEY(user_id) REFERENCES USERS(user_id) ON DELETE CASCADE,
+    FOREIGN KEY(schedule_id) REFERENCES SCHEDULES(schedule_id) ON DELETE CASCADE
 );

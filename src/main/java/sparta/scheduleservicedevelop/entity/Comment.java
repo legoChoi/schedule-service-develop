@@ -4,39 +4,36 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import sparta.scheduleservicedevelop.shared.entity.BaseTimeEntity;
-
-import java.util.List;
 
 @Getter
 @Entity
-@Table(name = "schedules")
+@Table(name = "comments")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Schedule extends BaseTimeEntity {
+public class Comment extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "schedule_id", nullable = false)
+    @Column(name = "comment_id")
     private Long id;
 
-    @Setter
-    @Column(length = 10, nullable = false)
-    private String title;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "schedule_id", nullable = false)
+    private Schedule schedule;
 
-    @Setter
-    @Column(length = 200, nullable = false)
-    private String contents;
-
-    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "schedule")
-    private List<Comment> commentList;
+    @Column(length = 100, nullable = false)
+    private String contents;
 
-    public Schedule(String title, String contents) {
-        this.title = title;
+    public Comment(String contents) {
+        this.contents = contents;
+    }
+
+    public Comment(Schedule schedule, User user, String contents) {
+        this.schedule = schedule;
+        this.user = user;
         this.contents = contents;
     }
 }

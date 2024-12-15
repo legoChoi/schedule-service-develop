@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum SessionNames {
+public enum SessionTags {
     LOGIN_USER("login_user");
 
     private final String tag;

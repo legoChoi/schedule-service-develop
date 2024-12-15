@@ -24,24 +24,24 @@ class ScheduleServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        this.scheduleService.save(new Schedule("title", "contents"));
-        this.scheduleService.save(new Schedule("title", "contents"));
-        this.scheduleService.save(new Schedule("title", "contents"));
-        this.scheduleService.save(new Schedule("title", "contents"));
-        this.scheduleService.save(new Schedule("title", "contents"));
+        this.scheduleService.save(null, new Schedule("title", "contents"));
+        this.scheduleService.save(null, new Schedule("title", "contents"));
+        this.scheduleService.save(null, new Schedule("title", "contents"));
+        this.scheduleService.save(null, new Schedule("title", "contents"));
+        this.scheduleService.save(null, new Schedule("title", "contents"));
     }
 
     @Test
     void save() {
         Schedule schedule = new Schedule("title", "contents");
-        Schedule savedSchedule = this.scheduleService.save(schedule);
+        Schedule savedSchedule = this.scheduleService.save(null, schedule);
 
         assertThat(schedule).isEqualTo(savedSchedule);
     }
 
     @Test
     void find() {
-        Schedule savedSchedule = this.scheduleService.save(new Schedule("title", "contents"));
+        Schedule savedSchedule = this.scheduleService.save(null, new Schedule("title", "contents"));
         Schedule findSchedule = this.scheduleService.findOneById(savedSchedule.getId());
 
         assertThat(savedSchedule).isEqualTo(findSchedule);

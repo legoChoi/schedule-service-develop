@@ -1,5 +1,8 @@
 package sparta.scheduleservicedevelop.apis.controller.schedule;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +14,8 @@ import sparta.scheduleservicedevelop.apis.controller.schedule.dto.response.Fetch
 import sparta.scheduleservicedevelop.apis.controller.schedule.dto.response.FetchScheduleResDto;
 import sparta.scheduleservicedevelop.entity.Schedule;
 import sparta.scheduleservicedevelop.apis.service.schedule.ScheduleService;
+import sparta.scheduleservicedevelop.shared.session.SessionTags;
+import sparta.scheduleservicedevelop.shared.session.SessionUserInfo;
 
 import java.util.List;
 
@@ -23,17 +28,21 @@ public class ScheduleController {
 
     @PostMapping
     public ResponseEntity<CreateScheduleResDto> createSchedule(
-            @RequestBody CreateScheduleReqDto createScheduleReqDto
+            @Valid @RequestBody CreateScheduleReqDto createScheduleReqDto,
+            HttpServletRequest request
     ) {
+        Long userId = SessionUserInfo.getId(request);
+
         Schedule schedule = new Schedule(
                 createScheduleReqDto.getTitle(),
                 createScheduleReqDto.getContents()
         );
 
-        Schedule savedSchedule = this.scheduleService.save(schedule);
+        Schedule savedSchedule = this.scheduleService.save(userId, schedule);
 
         CreateScheduleResDto data = new CreateScheduleResDto(
                 savedSchedule.getId(),
+                savedSchedule.getUser().getId(),
                 savedSchedule.getTitle(),
                 savedSchedule.getContents(),
                 savedSchedule.getCreatedAt(),
@@ -53,6 +62,7 @@ public class ScheduleController {
 
         FetchScheduleResDto data = new FetchScheduleResDto(
                 schedule.getId(),
+                schedule.getUser().getId(),
                 schedule.getTitle(),
                 schedule.getContents(),
                 schedule.getCreatedAt(),
@@ -71,6 +81,7 @@ public class ScheduleController {
         List<FetchScheduleResDto> list = data.stream()
                 .map(m -> new FetchScheduleResDto(
                         m.getId(),
+                        m.getUser().getId(),
                         m.getTitle(),
                         m.getContents(),
                         m.getCreatedAt(),
@@ -98,7 +109,8 @@ public class ScheduleController {
 
     @DeleteMapping("/{scheduleId}")
     public ResponseEntity<Void> deleteSchedule(
-            @PathVariable("scheduleId") Long scheduleId
+            @PathVariable("scheduleId") Long scheduleId,
+            HttpServletRequest request
     ) {
         this.scheduleService.deleteById(scheduleId);
 

@@ -1,13 +1,16 @@
 package sparta.scheduleservicedevelop.entity;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import sparta.scheduleservicedevelop.shared.entity.BaseTimeEntity;
 
 @Getter
 @Entity
 @Table(name = "users")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,16 +18,14 @@ public class User extends BaseTimeEntity {
     private Long id;
 
     @Setter
-    @Column(length = 4)
+    @Column(length = 10, nullable = false)
     private String userName;
 
-    @Column(length = 100)
+    @Column(length = 100, nullable = false)
     private String password;
 
-    @Column(name = "email", unique = true, length = 50)
+    @Column(unique = true, length = 50, nullable = false)
     private String email;
-
-    protected User() {}
 
     public User(String userName) {
         this.userName = userName;
