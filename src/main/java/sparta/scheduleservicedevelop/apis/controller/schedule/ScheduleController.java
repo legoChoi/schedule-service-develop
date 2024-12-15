@@ -2,6 +2,7 @@ package sparta.scheduleservicedevelop.apis.controller.schedule;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ public class ScheduleController {
 
     @PostMapping
     public ResponseEntity<CreateScheduleResDto> createSchedule(
-            @RequestBody CreateScheduleReqDto createScheduleReqDto,
+            @Valid @RequestBody CreateScheduleReqDto createScheduleReqDto,
             HttpServletRequest request
     ) {
         Long userId = getUserIdFromSession(request);
