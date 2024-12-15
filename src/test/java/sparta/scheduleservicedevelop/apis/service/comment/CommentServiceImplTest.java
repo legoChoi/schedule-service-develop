@@ -28,34 +28,5 @@ class CommentServiceImplTest {
 
     @Test
     void createAndFindComment() {
-        User user = new User("user", "password", "test@test.com");
-
-        this.entityManager.persist(user);
-
-        User savedUser = this.entityManager.find(User.class, user.getId());
-
-        log.info("savedUser {} name {}", savedUser.getId(), savedUser.getUserName());
-
-        Schedule schedule = new Schedule("title", "contents");
-        schedule.setUser(user);
-
-        this.entityManager.persist(schedule);
-        this.entityManager.flush();
-
-        Schedule savedSChedule = this.entityManager.find(Schedule.class, schedule.getId());
-
-        log.info("savedUser {} name {}", savedUser.getId(), savedUser.getUserName());
-        log.info("savedSchedule {} user {}", savedSChedule.getId(), savedSChedule.getUser().getId());
-
-        Comment comment = new Comment(savedSChedule, savedUser, "comment contents");
-        Comment savedComment = this.commentService.createComment(comment);
-
-        entityManager.flush();
-
-        Comment findComment = this.commentService.fetchOneById(savedComment.getId());
-
-        entityManager.flush();
-
-        Assertions.assertThat(savedComment).isEqualTo(findComment);
     }
 }

@@ -15,9 +15,8 @@ public class CommentJpaRepository implements CommentRepository {
     private final EntityManager entityManager;
 
     @Override
-    public Comment save(Comment comment) {
+    public void save(Comment comment) {
         this.entityManager.persist(comment);
-        return comment;
     }
 
     @Override

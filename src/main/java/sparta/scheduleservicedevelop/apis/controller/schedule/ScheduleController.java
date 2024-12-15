@@ -15,6 +15,7 @@ import sparta.scheduleservicedevelop.apis.controller.schedule.dto.response.Fetch
 import sparta.scheduleservicedevelop.entity.Schedule;
 import sparta.scheduleservicedevelop.apis.service.schedule.ScheduleService;
 import sparta.scheduleservicedevelop.shared.session.SessionTags;
+import sparta.scheduleservicedevelop.shared.session.SessionUserInfo;
 
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class ScheduleController {
             @Valid @RequestBody CreateScheduleReqDto createScheduleReqDto,
             HttpServletRequest request
     ) {
-        Long userId = getUserIdFromSession(request);
+        Long userId = SessionUserInfo.getId(request);
 
         Schedule schedule = new Schedule(
                 createScheduleReqDto.getTitle(),
@@ -116,10 +117,5 @@ public class ScheduleController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .build();
-    }
-
-    private Long getUserIdFromSession(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        return (Long) session.getAttribute(SessionTags.LOGIN_USER.getTag());
     }
 }
