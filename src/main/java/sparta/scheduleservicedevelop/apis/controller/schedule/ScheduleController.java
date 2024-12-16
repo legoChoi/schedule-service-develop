@@ -30,22 +30,7 @@ public class ScheduleController {
             HttpServletRequest request
     ) {
         Long userId = SessionUserInfo.getId(request);
-
-        Schedule schedule = new Schedule(
-                createScheduleReqDto.getTitle(),
-                createScheduleReqDto.getContents()
-        );
-
-        Schedule savedSchedule = this.scheduleService.createSchedule(userId, schedule);
-
-        CreateScheduleResDto data = new CreateScheduleResDto(
-                savedSchedule.getId(),
-                savedSchedule.getUser().getId(),
-                savedSchedule.getTitle(),
-                savedSchedule.getContents(),
-                savedSchedule.getCreatedAt(),
-                savedSchedule.getUpdatedAt()
-        );
+        CreateScheduleResDto data = this.scheduleService.createSchedule(userId, createScheduleReqDto);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)

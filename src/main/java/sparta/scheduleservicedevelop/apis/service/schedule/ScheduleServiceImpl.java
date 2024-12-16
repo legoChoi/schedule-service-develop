@@ -3,7 +3,9 @@ package sparta.scheduleservicedevelop.apis.service.schedule;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sparta.scheduleservicedevelop.apis.controller.schedule.dto.request.CreateScheduleReqDto;
 import sparta.scheduleservicedevelop.apis.controller.schedule.dto.request.UpdateScheduleReqDto;
+import sparta.scheduleservicedevelop.apis.controller.schedule.dto.response.CreateScheduleResDto;
 import sparta.scheduleservicedevelop.apis.repository.user.UserRepository;
 import sparta.scheduleservicedevelop.entity.Schedule;
 import sparta.scheduleservicedevelop.apis.repository.schedule.ScheduleRepository;
@@ -23,13 +25,19 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     @Transactional
-    public Schedule createSchedule(Long userId, Schedule schedule) {
+    public CreateScheduleResDto createSchedule(Long userId, CreateScheduleReqDto createScheduleReqDto) {
         User user = this.userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
-        schedule.setUser(user);
+        Schedule schedule = Schedule.builder()
+                .user(user)
+                .title(createScheduleReqDto.getTitle())
+                .contents(createScheduleReqDto.getContents())
+                .build();
 
-        return scheduleRepository.save(schedule);
+        Schedule savedSchedule = scheduleRepository.save(schedule);
+
+        return CreateScheduleResDto.from(savedSchedule);
     }
 
     @Override
