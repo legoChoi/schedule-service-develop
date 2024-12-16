@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sparta.scheduleservicedevelop.apis.controller.user.dto.request.CreateUserReqDto;
+import sparta.scheduleservicedevelop.apis.controller.user.dto.request.UpdateUserReqDto;
 import sparta.scheduleservicedevelop.apis.controller.user.dto.response.CreateUserResDto;
 import sparta.scheduleservicedevelop.apis.controller.user.dto.response.FetchUserResDto;
 import sparta.scheduleservicedevelop.entity.User;
@@ -87,10 +88,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateUser(Long userId, User updateUser) {
+    public void updateUser(Long userId, UpdateUserReqDto updateUserReqDto) {
         User findUser = this.userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
-        findUser.setUserName(updateUser.getUserName());
+        findUser.setUserName(updateUserReqDto.getUserName());
     }
 }

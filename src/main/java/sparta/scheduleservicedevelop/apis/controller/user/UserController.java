@@ -67,9 +67,7 @@ public class UserController {
             HttpServletRequest request
     ) {
         Long userId = SessionUserInfo.getId(request);
-        User updateUser = new User(updateUserReqDto.getUserName());
-
-        this.userService.updateUser(userId, updateUser);
+        this.userService.updateUser(userId, updateUserReqDto);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
