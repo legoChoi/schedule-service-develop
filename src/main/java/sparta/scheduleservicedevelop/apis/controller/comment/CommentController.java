@@ -1,6 +1,7 @@
 package sparta.scheduleservicedevelop.apis.controller.comment;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import sparta.scheduleservicedevelop.apis.controller.comment.dto.request.CreateCommentReqDto;
 import sparta.scheduleservicedevelop.apis.controller.comment.dto.request.UpdateCommentReqDto;
 import sparta.scheduleservicedevelop.apis.controller.comment.dto.response.CreateCommentResDto;
+import sparta.scheduleservicedevelop.apis.controller.comment.dto.response.FetchCommentListResDto;
 import sparta.scheduleservicedevelop.apis.controller.comment.dto.response.FetchCommentResDto;
 import sparta.scheduleservicedevelop.apis.service.comment.CommentService;
 import sparta.scheduleservicedevelop.shared.session.SessionUserInfo;
@@ -24,7 +26,7 @@ public class CommentController {
 
     @PostMapping
     public ResponseEntity<CreateCommentResDto> createComment(
-            @RequestBody CreateCommentReqDto createCommentReqDto,
+            @Valid @RequestBody CreateCommentReqDto createCommentReqDto,
             HttpServletRequest request
     ) {
         Long userId = SessionUserInfo.getId(request);
@@ -48,9 +50,9 @@ public class CommentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<FetchCommentResDto>> fetchAll() {
+    public ResponseEntity<FetchCommentListResDto> fetchAll() {
 
-        List<FetchCommentResDto> data = this.commentService.fetchAll();
+        FetchCommentListResDto data = this.commentService.fetchAll();
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -60,7 +62,7 @@ public class CommentController {
     @PatchMapping("/{commentId}")
     public ResponseEntity<Void> updateComment(
             @PathVariable("commentId") Long commentId,
-            @RequestBody UpdateCommentReqDto commentReqDto,
+            @Valid @RequestBody UpdateCommentReqDto commentReqDto,
             HttpServletRequest request
     ) {
         Long userId = SessionUserInfo.getId(request);

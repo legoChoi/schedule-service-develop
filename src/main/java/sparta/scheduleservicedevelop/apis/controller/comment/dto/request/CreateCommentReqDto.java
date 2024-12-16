@@ -8,8 +8,6 @@ import lombok.Getter;
 @Getter
 public class CreateCommentReqDto {
 
-    private Long userId;
-
     @NotNull
     private Long scheduleId;
 

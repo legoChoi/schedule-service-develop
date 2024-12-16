@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sparta.scheduleservicedevelop.apis.controller.comment.dto.request.CreateCommentReqDto;
 import sparta.scheduleservicedevelop.apis.controller.comment.dto.request.UpdateCommentReqDto;
 import sparta.scheduleservicedevelop.apis.controller.comment.dto.response.CreateCommentResDto;
+import sparta.scheduleservicedevelop.apis.controller.comment.dto.response.FetchCommentListResDto;
 import sparta.scheduleservicedevelop.apis.controller.comment.dto.response.FetchCommentResDto;
 import sparta.scheduleservicedevelop.apis.repository.comment.CommentRepository;
 import sparta.scheduleservicedevelop.apis.repository.schedule.ScheduleRepository;
@@ -38,15 +39,11 @@ public class CommentServiceImpl implements CommentService {
         Schedule schedule = this.scheduleRepository.findById(createCommentReqDto.getScheduleId())
                 .orElseThrow(ScheduleNotFoundException::new);
 
-        Comment createComment = new Comment(schedule, user, createCommentReqDto.getContents());
+        Comment comment = new Comment(schedule, user, createCommentReqDto.getContents());
 
-        this.commentRepository.save(createComment);
+        this.commentRepository.save(comment);
 
-        return new CreateCommentResDto(
-                createComment.getUser().getId(),
-                createComment.getSchedule().getId(),
-                createComment.getContents()
-        );
+        return CreateCommentResDto.from(comment);
     }
 
     @Override
@@ -58,12 +55,14 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<FetchCommentResDto> fetchAll() {
+    public FetchCommentListResDto fetchAll() {
         List<Comment> commentList = this.commentRepository.findAll();
 
-        return commentList.stream()
+        List<FetchCommentResDto> data = commentList.stream()
                 .map(FetchCommentResDto::from)
                 .toList();
+
+        return new FetchCommentListResDto(data.size(), data);
     }
 
     @Override
@@ -88,6 +87,10 @@ public class CommentServiceImpl implements CommentService {
         this.commentRepository.delete(comment);
     }
 
+    /**
+     * 현재 세션에 있는 로그인 된 유저의 ID와 변경하려는 댓글 데이터의 ID 값의 비교
+     * : 다르면 FORBIDDEN Exception
+     */
     private void checkAuth(Comment comment, Long userId) {
         if (!comment.getUser().getId().equals(userId)) {
             throw new UnAuthorizedException();

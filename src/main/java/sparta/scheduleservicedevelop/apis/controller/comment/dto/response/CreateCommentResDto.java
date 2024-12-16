@@ -1,14 +1,25 @@
 package sparta.scheduleservicedevelop.apis.controller.comment.dto.response;
 
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import sparta.scheduleservicedevelop.entity.Comment;
 
-@Getter @Setter
-@AllArgsConstructor
+@Getter
+@Builder(access = AccessLevel.PRIVATE)
 public class CreateCommentResDto {
 
-    private Long userId;
-    private Long scheduleId;
-    private String contents;
+    private final Long commentId;
+    private final Long userId;
+    private final Long scheduleId;
+    private final String contents;
+
+    public static CreateCommentResDto from(Comment comment) {
+        return CreateCommentResDto.builder()
+                .commentId(comment.getId())
+                .userId(comment.getUser().getId())
+                .scheduleId(comment.getSchedule().getId())
+                .contents(comment.getContents())
+                .build();
+    }
 }
