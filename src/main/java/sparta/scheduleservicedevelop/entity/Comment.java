@@ -29,10 +29,6 @@ public class Comment extends BaseTimeEntity {
     @Column(length = 100, nullable = false)
     private String contents;
 
-    public Comment(String contents) {
-        this.contents = contents;
-    }
-
     public Comment(Schedule schedule, User user, String contents) {
         this.schedule = schedule;
         this.user = user;

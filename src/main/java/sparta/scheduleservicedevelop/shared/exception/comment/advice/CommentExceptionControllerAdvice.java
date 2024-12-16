@@ -1,15 +1,15 @@
 package sparta.scheduleservicedevelop.shared.exception.comment.advice;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import sparta.scheduleservicedevelop.apis.controller.comment.CommentController;
 import sparta.scheduleservicedevelop.shared.exception.comment.exception.CommentNotFoundException;
 import sparta.scheduleservicedevelop.shared.exception.dto.ExceptionDto;
 import sparta.scheduleservicedevelop.shared.exception.schedule.exception.ScheduleNotFoundException;
 import sparta.scheduleservicedevelop.shared.exception.user.exception.UserNotFoundException;
 
-@ControllerAdvice(assignableTypes = CommentController.class)
+@RestControllerAdvice(assignableTypes = CommentController.class)
 public class CommentExceptionControllerAdvice {
 
     @ExceptionHandler(CommentNotFoundException.class)
