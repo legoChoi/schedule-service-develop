@@ -36,7 +36,7 @@ public class UserController {
                 createUserReqDto.getEmail()
         );
 
-        User savedUser = this.userService.save(user);
+        User savedUser = this.userService.createUser(user);
 
         CreateUserResDto data = new CreateUserResDto(
                 savedUser.getId(),
@@ -55,7 +55,7 @@ public class UserController {
     public ResponseEntity<FetchUserResDto> fetchUser(
             @PathVariable("userId") Long userId
     ) {
-        User findUser = this.userService.findById(userId);
+        User findUser = this.userService.fetchOneById(userId);
 
         FetchUserResDto data = new FetchUserResDto(
                 findUser.getId(),
@@ -74,7 +74,7 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(
             @PathVariable("userId") Long userId
     ) {
-        this.userService.delete(userId);
+        this.userService.deleteUser(userId);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

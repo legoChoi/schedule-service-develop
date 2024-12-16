@@ -24,25 +24,25 @@ class ScheduleServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        this.scheduleService.save(null, new Schedule("title", "contents"));
-        this.scheduleService.save(null, new Schedule("title", "contents"));
-        this.scheduleService.save(null, new Schedule("title", "contents"));
-        this.scheduleService.save(null, new Schedule("title", "contents"));
-        this.scheduleService.save(null, new Schedule("title", "contents"));
+        this.scheduleService.createSchedule(null, new Schedule("title", "contents"));
+        this.scheduleService.createSchedule(null, new Schedule("title", "contents"));
+        this.scheduleService.createSchedule(null, new Schedule("title", "contents"));
+        this.scheduleService.createSchedule(null, new Schedule("title", "contents"));
+        this.scheduleService.createSchedule(null, new Schedule("title", "contents"));
     }
 
     @Test
     void save() {
         Schedule schedule = new Schedule("title", "contents");
-        Schedule savedSchedule = this.scheduleService.save(null, schedule);
+        Schedule savedSchedule = this.scheduleService.createSchedule(null, schedule);
 
         assertThat(schedule).isEqualTo(savedSchedule);
     }
 
     @Test
     void find() {
-        Schedule savedSchedule = this.scheduleService.save(null, new Schedule("title", "contents"));
-        Schedule findSchedule = this.scheduleService.findOneById(savedSchedule.getId());
+        Schedule savedSchedule = this.scheduleService.createSchedule(null, new Schedule("title", "contents"));
+        Schedule findSchedule = this.scheduleService.fetchOneById(savedSchedule.getId());
 
         assertThat(savedSchedule).isEqualTo(findSchedule);
     }
@@ -50,30 +50,30 @@ class ScheduleServiceImplTest {
     @Test
     void findScheduleNotFoundException() {
         Assertions.assertThrows(ScheduleNotFoundException.class, () ->
-            this.scheduleService.findOneById(999L));
+            this.scheduleService.fetchOneById(999L));
     }
 
     @Test
     void findAll() {
-        List<Schedule> schedules = this.scheduleService.findAll();
+        List<Schedule> schedules = this.scheduleService.fetchAll();
 
         assertThat(schedules).hasSize(5);
     }
 
     @Test
     void delete() {
-        List<Schedule> before = this.scheduleService.findAll();
+        List<Schedule> before = this.scheduleService.fetchAll();
         assertThat(before).hasSize(5);
 
-        this.scheduleService.deleteById(1L);
+        this.scheduleService.deleteSchedule(1L);
 
-        List<Schedule> after = this.scheduleService.findAll();
+        List<Schedule> after = this.scheduleService.fetchAll();
         assertThat(after).hasSize(4);
     }
 
     @Test
     void deleteScheduleNotFoundException() {
         Assertions.assertThrows(ScheduleNotFoundException.class, () ->
-            this.scheduleService.deleteById(999L));
+            this.scheduleService.deleteSchedule(999L));
     }
 }

@@ -3,9 +3,9 @@ package sparta.scheduleservicedevelop.apis.service.user;
 import sparta.scheduleservicedevelop.entity.User;
 
 public interface UserService {
-    User save(User user);
-    User findById(Long id);
-    void delete(Long id);
-    User login(User user);
+    User createUser(User user);
+    User fetchOneById(Long id);
     void updateUser(Long id, User updateUser);
+    void deleteUser(Long id);
+    User login(User user);
 }

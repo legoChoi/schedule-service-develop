@@ -6,9 +6,9 @@ import sparta.scheduleservicedevelop.entity.Schedule;
 import java.util.List;
 
 public interface ScheduleService {
-    Schedule save(Long userId, Schedule schedule);
-    Schedule findOneById(Long id);
-    List<Schedule> findAll();
-    void updateById(Long scheduleId, UpdateScheduleReqDto updateScheduleReqDto);
-    void deleteById(Long scheduleId);
+    Schedule createSchedule(Long userId, Schedule schedule);
+    Schedule fetchOneById(Long id);
+    List<Schedule> fetchAll();
+    void updateSchedule(Long scheduleId, UpdateScheduleReqDto updateScheduleReqDto);
+    void deleteSchedule(Long scheduleId);
 }

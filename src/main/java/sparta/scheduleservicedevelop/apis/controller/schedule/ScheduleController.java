@@ -1,7 +1,6 @@
 package sparta.scheduleservicedevelop.apis.controller.schedule;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,7 +13,6 @@ import sparta.scheduleservicedevelop.apis.controller.schedule.dto.response.Fetch
 import sparta.scheduleservicedevelop.apis.controller.schedule.dto.response.FetchScheduleResDto;
 import sparta.scheduleservicedevelop.entity.Schedule;
 import sparta.scheduleservicedevelop.apis.service.schedule.ScheduleService;
-import sparta.scheduleservicedevelop.shared.session.SessionTags;
 import sparta.scheduleservicedevelop.shared.session.SessionUserInfo;
 
 import java.util.List;
@@ -38,7 +36,7 @@ public class ScheduleController {
                 createScheduleReqDto.getContents()
         );
 
-        Schedule savedSchedule = this.scheduleService.save(userId, schedule);
+        Schedule savedSchedule = this.scheduleService.createSchedule(userId, schedule);
 
         CreateScheduleResDto data = new CreateScheduleResDto(
                 savedSchedule.getId(),
@@ -58,7 +56,7 @@ public class ScheduleController {
     public ResponseEntity<FetchScheduleResDto> fetchOne(
             @PathVariable("scheduleId") Long scheduleId
     ) {
-        Schedule schedule = this.scheduleService.findOneById(scheduleId);
+        Schedule schedule = this.scheduleService.fetchOneById(scheduleId);
 
         FetchScheduleResDto data = new FetchScheduleResDto(
                 schedule.getId(),
@@ -76,7 +74,7 @@ public class ScheduleController {
 
     @GetMapping
     public ResponseEntity<FetchScheduleListResDto> fetchAll() {
-        List<Schedule> data = this.scheduleService.findAll();
+        List<Schedule> data = this.scheduleService.fetchAll();
 
         List<FetchScheduleResDto> list = data.stream()
                 .map(m -> new FetchScheduleResDto(
@@ -100,7 +98,7 @@ public class ScheduleController {
             @PathVariable("scheduleId") Long scheduleId,
             UpdateScheduleReqDto updateScheduleReqDto
     ) {
-        this.scheduleService.updateById(scheduleId, updateScheduleReqDto);
+        this.scheduleService.updateSchedule(scheduleId, updateScheduleReqDto);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -112,7 +110,7 @@ public class ScheduleController {
             @PathVariable("scheduleId") Long scheduleId,
             HttpServletRequest request
     ) {
-        this.scheduleService.deleteById(scheduleId);
+        this.scheduleService.deleteSchedule(scheduleId);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

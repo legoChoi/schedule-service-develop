@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
     private final Encoder passwordEncoder;
 
     @Override
-    public User save(User user) {
+    public User createUser(User user) {
         // 중복 이메일 검증
         Optional<User> checkUser = this.userRepository.findByEmail(user.getEmail());
 
@@ -43,13 +43,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findById(Long id) {
+    public User fetchOneById(Long id) {
         return this.userRepository.findById(id)
                 .orElseThrow(UserNotFoundException::new);
     }
 
     @Override
-    public void delete(Long id) {
+    public void deleteUser(Long id) {
         User user = this.userRepository.findById(id)
                 .orElseThrow(UserNotFoundException::new);
 

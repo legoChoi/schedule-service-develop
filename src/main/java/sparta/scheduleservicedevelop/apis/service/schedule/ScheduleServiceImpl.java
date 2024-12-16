@@ -14,7 +14,7 @@ import sparta.scheduleservicedevelop.shared.exception.user.exception.UserNotFoun
 import java.util.List;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ScheduleServiceImpl implements ScheduleService {
 
@@ -22,26 +22,30 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final UserRepository userRepository;
 
     @Override
-    public Schedule save(Long userId, Schedule schedule) {
-        User user = this.userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+    @Transactional
+    public Schedule createSchedule(Long userId, Schedule schedule) {
+        User user = this.userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+
         schedule.setUser(user);
 
         return scheduleRepository.save(schedule);
     }
 
     @Override
-    public Schedule findOneById(Long id) {
+    public Schedule fetchOneById(Long id) {
         return this.scheduleRepository.findById(id)
                 .orElseThrow(ScheduleNotFoundException::new);
     }
 
     @Override
-    public List<Schedule> findAll() {
+    public List<Schedule> fetchAll() {
         return this.scheduleRepository.findAll();
     }
 
     @Override
-    public void updateById(Long scheduleId, UpdateScheduleReqDto updateScheduleReqDto) {
+    @Transactional
+    public void updateSchedule(Long scheduleId, UpdateScheduleReqDto updateScheduleReqDto) {
         Schedule schedule = this.scheduleRepository.findById(scheduleId)
                 .orElseThrow(ScheduleNotFoundException::new);
 
@@ -50,7 +54,8 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public void deleteById(Long scheduleId) {
+    @Transactional
+    public void deleteSchedule(Long scheduleId) {
         Schedule schedule = this.scheduleRepository.findById(scheduleId)
                 .orElseThrow(ScheduleNotFoundException::new);
 
