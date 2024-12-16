@@ -49,7 +49,7 @@ public class UserController {
                 .body(data);
     }
 
-    @DeleteMapping("/{userId}")
+    @DeleteMapping
     public ResponseEntity<Void> deleteUser(
             HttpServletRequest request
     ) {
