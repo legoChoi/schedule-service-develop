@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import sparta.scheduleservicedevelop.entity.Comment;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Builder(access = AccessLevel.PRIVATE)
 public class CreateCommentResDto {
@@ -13,6 +15,8 @@ public class CreateCommentResDto {
     private final Long userId;
     private final Long scheduleId;
     private final String contents;
+    private final LocalDateTime createdAt;
+    private final LocalDateTime updatedAt;
 
     public static CreateCommentResDto from(Comment comment) {
         return CreateCommentResDto.builder()
@@ -20,6 +24,8 @@ public class CreateCommentResDto {
                 .userId(comment.getUser().getId())
                 .scheduleId(comment.getSchedule().getId())
                 .contents(comment.getContents())
+                .createdAt(comment.getCreatedAt())
+                .updatedAt(comment.getUpdatedAt())
                 .build();
     }
 }

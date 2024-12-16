@@ -96,7 +96,7 @@ public class ScheduleController {
     @PatchMapping("/{scheduleId}")
     public ResponseEntity<Void> updateSchedule(
             @PathVariable("scheduleId") Long scheduleId,
-            UpdateScheduleReqDto updateScheduleReqDto
+            @Valid @RequestBody UpdateScheduleReqDto updateScheduleReqDto
     ) {
         this.scheduleService.updateSchedule(scheduleId, updateScheduleReqDto);
 
