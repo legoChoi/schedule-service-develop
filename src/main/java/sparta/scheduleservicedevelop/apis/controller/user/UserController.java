@@ -37,19 +37,12 @@ public class UserController {
                 .body(data);
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping
     public ResponseEntity<FetchUserResDto> fetchUser(
-            @PathVariable("userId") Long userId
+            HttpServletRequest request
     ) {
-        User findUser = this.userService.fetchOneById(userId);
-
-        FetchUserResDto data = new FetchUserResDto(
-                findUser.getId(),
-                findUser.getUserName(),
-                findUser.getEmail(),
-                findUser.getCreatedAt(),
-                findUser.getUpdatedAt()
-        );
+        Long userId = SessionUserInfo.getId(request);
+        FetchUserResDto data = this.userService.fetchOneById(userId);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sparta.scheduleservicedevelop.apis.controller.user.dto.request.CreateUserReqDto;
 import sparta.scheduleservicedevelop.apis.controller.user.dto.response.CreateUserResDto;
+import sparta.scheduleservicedevelop.apis.controller.user.dto.response.FetchUserResDto;
 import sparta.scheduleservicedevelop.entity.User;
 import sparta.scheduleservicedevelop.shared.exception.user.exception.AlreadyExistsUserEmailException;
 import sparta.scheduleservicedevelop.apis.repository.user.UserRepository;
@@ -48,15 +49,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User fetchOneById(Long id) {
-        return this.userRepository.findById(id)
+    public FetchUserResDto fetchOneById(Long userId) {
+        User user = this.userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
+
+        return FetchUserResDto.from(user);
     }
 
     @Override
     @Transactional
-    public void deleteUser(Long id) {
-        User user = this.userRepository.findById(id)
+    public void deleteUser(Long userId) {
+        User user = this.userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
         this.userRepository.delete(user);
@@ -84,8 +87,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateUser(Long id, User updateUser) {
-        User findUser = this.userRepository.findById(id)
+    public void updateUser(Long userId, User updateUser) {
+        User findUser = this.userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
         findUser.setUserName(updateUser.getUserName());
