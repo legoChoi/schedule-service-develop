@@ -13,7 +13,7 @@ import sparta.scheduleservicedevelop.shared.tools.bcrypt.Encoder;
 import java.util.Optional;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
@@ -21,6 +21,7 @@ public class UserServiceImpl implements UserService {
     private final Encoder passwordEncoder;
 
     @Override
+    @Transactional
     public User createUser(User user) {
         // 중복 이메일 검증
         Optional<User> checkUser = this.userRepository.findByEmail(user.getEmail());
@@ -49,6 +50,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void deleteUser(Long id) {
         User user = this.userRepository.findById(id)
                 .orElseThrow(UserNotFoundException::new);
@@ -77,6 +79,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void updateUser(Long id, User updateUser) {
         User findUser = this.userRepository.findById(id)
                 .orElseThrow(UserNotFoundException::new);

@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sparta.scheduleservicedevelop.apis.controller.comment.dto.request.CreateCommentReqDto;
 import sparta.scheduleservicedevelop.apis.controller.comment.dto.request.UpdateCommentReqDto;
 import sparta.scheduleservicedevelop.apis.controller.comment.dto.response.CreateCommentResDto;
+import sparta.scheduleservicedevelop.apis.controller.comment.dto.response.FetchCommentResDto;
 import sparta.scheduleservicedevelop.apis.repository.comment.CommentRepository;
 import sparta.scheduleservicedevelop.apis.repository.schedule.ScheduleRepository;
 import sparta.scheduleservicedevelop.apis.repository.user.UserRepository;
@@ -49,14 +50,20 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment fetchOneById(Long id) {
-        return this.commentRepository.findById(id)
+    public FetchCommentResDto fetchOneById(Long id) {
+        Comment comment = this.commentRepository.findById(id)
                 .orElseThrow(CommentNotFoundException::new);
+
+        return FetchCommentResDto.from(comment);
     }
 
     @Override
-    public List<Comment> fetchAll() {
-        return this.commentRepository.findAll();
+    public List<FetchCommentResDto> fetchAll() {
+        List<Comment> commentList = this.commentRepository.findAll();
+
+        return commentList.stream()
+                .map(FetchCommentResDto::from)
+                .toList();
     }
 
     @Override
@@ -82,10 +89,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     private void checkAuth(Comment comment, Long userId) {
-        User user = this.userRepository.findById(userId)
-                .orElseThrow(UserNotFoundException::new);
-
-        if (comment.getUser() != user) {
+        if (!comment.getUser().getId().equals(userId)) {
             throw new UnAuthorizedException();
         }
     }
