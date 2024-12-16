@@ -10,6 +10,6 @@ public interface ScheduleService {
     CreateScheduleResDto createSchedule(Long userId, CreateScheduleReqDto createScheduleReqDto);
     FetchScheduleResDto fetchOneById(Long id);
     FetchScheduleListResDto fetchAll();
-    void updateSchedule(Long scheduleId, UpdateScheduleReqDto updateScheduleReqDto);
-    void deleteSchedule(Long scheduleId);
+    void updateSchedule(Long userId, Long scheduleId, UpdateScheduleReqDto updateScheduleReqDto);
+    void deleteSchedule(Long userId, Long scheduleId);
 }

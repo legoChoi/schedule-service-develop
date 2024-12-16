@@ -57,9 +57,11 @@ public class ScheduleController {
     @PatchMapping("/{scheduleId}")
     public ResponseEntity<Void> updateSchedule(
             @PathVariable("scheduleId") Long scheduleId,
-            @Valid @RequestBody UpdateScheduleReqDto updateScheduleReqDto
+            @Valid @RequestBody UpdateScheduleReqDto updateScheduleReqDto,
+            HttpServletRequest request
     ) {
-        this.scheduleService.updateSchedule(scheduleId, updateScheduleReqDto);
+        Long userId = SessionUserInfo.getId(request);
+        this.scheduleService.updateSchedule(userId, scheduleId, updateScheduleReqDto);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -71,7 +73,8 @@ public class ScheduleController {
             @PathVariable("scheduleId") Long scheduleId,
             HttpServletRequest request
     ) {
-        this.scheduleService.deleteSchedule(scheduleId);
+        Long userId = SessionUserInfo.getId(request);
+        this.scheduleService.deleteSchedule(userId, scheduleId);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

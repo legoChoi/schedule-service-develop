@@ -12,6 +12,7 @@ import sparta.scheduleservicedevelop.apis.repository.user.UserRepository;
 import sparta.scheduleservicedevelop.entity.Schedule;
 import sparta.scheduleservicedevelop.apis.repository.schedule.ScheduleRepository;
 import sparta.scheduleservicedevelop.entity.User;
+import sparta.scheduleservicedevelop.shared.exception.auth.exception.UnAuthorizedException;
 import sparta.scheduleservicedevelop.shared.exception.schedule.exception.ScheduleNotFoundException;
 import sparta.scheduleservicedevelop.shared.exception.user.exception.UserNotFoundException;
 
@@ -63,9 +64,11 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     @Transactional
-    public void updateSchedule(Long scheduleId, UpdateScheduleReqDto updateScheduleReqDto) {
+    public void updateSchedule(Long userId, Long scheduleId, UpdateScheduleReqDto updateScheduleReqDto) {
         Schedule schedule = this.scheduleRepository.findById(scheduleId)
                 .orElseThrow(ScheduleNotFoundException::new);
+
+        checkAuth(schedule, userId);
 
         schedule.setTitle(updateScheduleReqDto.getTitle());
         schedule.setContents(updateScheduleReqDto.getContents());
@@ -73,10 +76,22 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     @Transactional
-    public void deleteSchedule(Long scheduleId) {
+    public void deleteSchedule(Long userId, Long scheduleId) {
         Schedule schedule = this.scheduleRepository.findById(scheduleId)
                 .orElseThrow(ScheduleNotFoundException::new);
 
+        checkAuth(schedule, userId);
+
         this.scheduleRepository.delete(schedule);
+    }
+
+    /**
+     * 현재 세션에 있는 로그인 된 유저의 ID와 변경하려는 일정 데이터의 ID 값의 비교
+     * : 다르면 FORBIDDEN Exception
+     */
+    private void checkAuth(Schedule schedule, Long userId) {
+        if (!schedule.getUser().getId().equals(userId)) {
+            throw new UnAuthorizedException();
+        }
     }
 }
