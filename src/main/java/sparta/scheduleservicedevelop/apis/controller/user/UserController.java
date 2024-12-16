@@ -51,8 +51,9 @@ public class UserController {
 
     @DeleteMapping("/{userId}")
     public ResponseEntity<Void> deleteUser(
-            @PathVariable("userId") Long userId
+            HttpServletRequest request
     ) {
+        Long userId = SessionUserInfo.getId(request);
         this.userService.deleteUser(userId);
 
         return ResponseEntity
