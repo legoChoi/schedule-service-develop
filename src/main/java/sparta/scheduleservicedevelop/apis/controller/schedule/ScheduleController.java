@@ -11,11 +11,8 @@ import sparta.scheduleservicedevelop.apis.controller.schedule.dto.request.Update
 import sparta.scheduleservicedevelop.apis.controller.schedule.dto.response.CreateScheduleResDto;
 import sparta.scheduleservicedevelop.apis.controller.schedule.dto.response.FetchScheduleListResDto;
 import sparta.scheduleservicedevelop.apis.controller.schedule.dto.response.FetchScheduleResDto;
-import sparta.scheduleservicedevelop.entity.Schedule;
 import sparta.scheduleservicedevelop.apis.service.schedule.ScheduleService;
 import sparta.scheduleservicedevelop.shared.session.SessionUserInfo;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/apis/schedules")
@@ -41,16 +38,7 @@ public class ScheduleController {
     public ResponseEntity<FetchScheduleResDto> fetchOne(
             @PathVariable("scheduleId") Long scheduleId
     ) {
-        Schedule schedule = this.scheduleService.fetchOneById(scheduleId);
-
-        FetchScheduleResDto data = new FetchScheduleResDto(
-                schedule.getId(),
-                schedule.getUser().getId(),
-                schedule.getTitle(),
-                schedule.getContents(),
-                schedule.getCreatedAt(),
-                schedule.getUpdatedAt()
-        );
+        FetchScheduleResDto data = this.scheduleService.fetchOneById(scheduleId);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -59,23 +47,11 @@ public class ScheduleController {
 
     @GetMapping
     public ResponseEntity<FetchScheduleListResDto> fetchAll() {
-        List<Schedule> data = this.scheduleService.fetchAll();
-
-        List<FetchScheduleResDto> list = data.stream()
-                .map(m -> new FetchScheduleResDto(
-                        m.getId(),
-                        m.getUser().getId(),
-                        m.getTitle(),
-                        m.getContents(),
-                        m.getCreatedAt(),
-                        m.getUpdatedAt()))
-                .toList();
-
-        FetchScheduleListResDto dataDto = new FetchScheduleListResDto(list.size(), list);
+        FetchScheduleListResDto data = this.scheduleService.fetchAll();
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(dataDto);
+                .body(data);
     }
 
     @PatchMapping("/{scheduleId}")

@@ -6,6 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import sparta.scheduleservicedevelop.apis.controller.schedule.dto.request.CreateScheduleReqDto;
 import sparta.scheduleservicedevelop.apis.controller.schedule.dto.request.UpdateScheduleReqDto;
 import sparta.scheduleservicedevelop.apis.controller.schedule.dto.response.CreateScheduleResDto;
+import sparta.scheduleservicedevelop.apis.controller.schedule.dto.response.FetchScheduleListResDto;
+import sparta.scheduleservicedevelop.apis.controller.schedule.dto.response.FetchScheduleResDto;
 import sparta.scheduleservicedevelop.apis.repository.user.UserRepository;
 import sparta.scheduleservicedevelop.entity.Schedule;
 import sparta.scheduleservicedevelop.apis.repository.schedule.ScheduleRepository;
@@ -41,14 +43,22 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public Schedule fetchOneById(Long id) {
-        return this.scheduleRepository.findById(id)
+    public FetchScheduleResDto fetchOneById(Long id) {
+        Schedule schedule = this.scheduleRepository.findById(id)
                 .orElseThrow(ScheduleNotFoundException::new);
+
+        return FetchScheduleResDto.from(schedule);
     }
 
     @Override
-    public List<Schedule> fetchAll() {
-        return this.scheduleRepository.findAll();
+    public FetchScheduleListResDto fetchAll() {
+        List<Schedule> scheduleList = this.scheduleRepository.findAll();
+
+        List<FetchScheduleResDto> data = scheduleList.stream()
+                .map(FetchScheduleResDto::from)
+                .toList();
+
+        return new FetchScheduleListResDto(data.size(), data);
     }
 
     @Override
