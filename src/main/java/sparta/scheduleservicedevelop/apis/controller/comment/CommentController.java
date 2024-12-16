@@ -4,11 +4,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import sparta.scheduleservicedevelop.apis.controller.comment.dto.request.CreateCommentReqDto;
+import sparta.scheduleservicedevelop.apis.controller.comment.dto.request.UpdateCommentReqDto;
 import sparta.scheduleservicedevelop.apis.controller.comment.dto.response.CreateCommentResDto;
 import sparta.scheduleservicedevelop.apis.service.comment.CommentService;
 import sparta.scheduleservicedevelop.shared.session.SessionUserInfo;
@@ -32,5 +30,34 @@ public class CommentController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(data);
+    }
+
+    @PatchMapping("/{commentId}")
+    public ResponseEntity<Void> updateComment(
+            @PathVariable("commentId") Long commentId,
+            @RequestBody UpdateCommentReqDto commentReqDto,
+            HttpServletRequest request
+    ) {
+        Long userId = SessionUserInfo.getId(request);
+
+        this.commentService.updateComment(userId, commentId, commentReqDto);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .build();
+    }
+
+    @DeleteMapping("/{commentId}")
+    public ResponseEntity<Void> deleteComment(
+            @PathVariable("commentId") Long commentId,
+            HttpServletRequest request
+    ) {
+        Long userId = SessionUserInfo.getId(request);
+
+        this.commentService.deleteComment(userId, commentId);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .build();
     }
 }

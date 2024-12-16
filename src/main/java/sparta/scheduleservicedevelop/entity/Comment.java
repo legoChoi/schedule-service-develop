@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import sparta.scheduleservicedevelop.shared.entity.BaseTimeEntity;
 
 @Getter
@@ -24,6 +25,7 @@ public class Comment extends BaseTimeEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Setter
     @Column(length = 100, nullable = false)
     private String contents;
 

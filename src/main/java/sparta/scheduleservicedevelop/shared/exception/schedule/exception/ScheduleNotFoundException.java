@@ -6,10 +6,9 @@ import sparta.scheduleservicedevelop.shared.exception.schedule.exception.message
 @Getter
 public class ScheduleNotFoundException extends IllegalArgumentException {
 
-    private final int errorCode;
+    private final int errorCode = ScheduleExceptionMessages.SCHEDULE_NOT_FOUND.getErrorCode();
 
     public ScheduleNotFoundException() {
         super(ScheduleExceptionMessages.SCHEDULE_NOT_FOUND.getErrorMessage());
-        this.errorCode = ScheduleExceptionMessages.SCHEDULE_NOT_FOUND.getErrorCode();
     }
 }

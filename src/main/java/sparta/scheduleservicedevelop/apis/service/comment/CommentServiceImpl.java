@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sparta.scheduleservicedevelop.apis.controller.comment.dto.request.CreateCommentReqDto;
+import sparta.scheduleservicedevelop.apis.controller.comment.dto.request.UpdateCommentReqDto;
 import sparta.scheduleservicedevelop.apis.controller.comment.dto.response.CreateCommentResDto;
 import sparta.scheduleservicedevelop.apis.repository.comment.CommentRepository;
 import sparta.scheduleservicedevelop.apis.repository.schedule.ScheduleRepository;
@@ -11,6 +12,7 @@ import sparta.scheduleservicedevelop.apis.repository.user.UserRepository;
 import sparta.scheduleservicedevelop.entity.Comment;
 import sparta.scheduleservicedevelop.entity.Schedule;
 import sparta.scheduleservicedevelop.entity.User;
+import sparta.scheduleservicedevelop.shared.exception.auth.exception.UnAuthorizedException;
 import sparta.scheduleservicedevelop.shared.exception.comment.exception.CommentNotFoundException;
 import sparta.scheduleservicedevelop.shared.exception.schedule.exception.ScheduleNotFoundException;
 import sparta.scheduleservicedevelop.shared.exception.user.exception.UserNotFoundException;
@@ -29,7 +31,6 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     public CreateCommentResDto createComment(Long userId, CreateCommentReqDto createCommentReqDto) {
-
         User user = this.userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
@@ -59,12 +60,33 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void update(Comment comment) {
+    @Transactional
+    public void updateComment(Long userId, Long commentId, UpdateCommentReqDto commentReqDto) {
+        Comment comment = this.commentRepository.findById(commentId)
+                .orElseThrow(CommentNotFoundException::new);
 
+        checkAuth(comment, userId);
+
+        comment.setContents(commentReqDto.getContents());
     }
 
     @Override
-    public void delete(Long id) {
+    @Transactional
+    public void deleteComment(Long userId, Long commentId) {
+        Comment comment = this.commentRepository.findById(commentId)
+                .orElseThrow(CommentNotFoundException::new);
 
+        checkAuth(comment, userId);
+
+        this.commentRepository.delete(comment);
+    }
+
+    private void checkAuth(Comment comment, Long userId) {
+        User user = this.userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+
+        if (comment.getUser() != user) {
+            throw new UnAuthorizedException();
+        }
     }
 }
