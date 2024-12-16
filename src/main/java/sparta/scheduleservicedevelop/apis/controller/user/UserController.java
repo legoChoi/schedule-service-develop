@@ -30,51 +30,31 @@ public class UserController {
     public ResponseEntity<CreateUserResDto> createUser(
             @Valid @RequestBody CreateUserReqDto createUserReqDto
     ) {
-        User user = new User(
-                createUserReqDto.getUserName(),
-                createUserReqDto.getPassword(),
-                createUserReqDto.getEmail()
-        );
-
-        User savedUser = this.userService.save(user);
-
-        CreateUserResDto data = new CreateUserResDto(
-                savedUser.getId(),
-                savedUser.getUserName(),
-                savedUser.getEmail(),
-                savedUser.getCreatedAt(),
-                savedUser.getUpdatedAt()
-        );
+        CreateUserResDto data = this.userService.createUser(createUserReqDto);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(data);
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping
     public ResponseEntity<FetchUserResDto> fetchUser(
-            @PathVariable("userId") Long userId
+            HttpServletRequest request
     ) {
-        User findUser = this.userService.findById(userId);
-
-        FetchUserResDto data = new FetchUserResDto(
-                findUser.getId(),
-                findUser.getUserName(),
-                findUser.getEmail(),
-                findUser.getCreatedAt(),
-                findUser.getUpdatedAt()
-        );
+        Long userId = SessionUserInfo.getId(request);
+        FetchUserResDto data = this.userService.fetchOneById(userId);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(data);
     }
 
-    @DeleteMapping("/{userId}")
+    @DeleteMapping
     public ResponseEntity<Void> deleteUser(
-            @PathVariable("userId") Long userId
+            HttpServletRequest request
     ) {
-        this.userService.delete(userId);
+        Long userId = SessionUserInfo.getId(request);
+        this.userService.deleteUser(userId);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -87,9 +67,7 @@ public class UserController {
             HttpServletRequest request
     ) {
         Long userId = SessionUserInfo.getId(request);
-        User updateUser = new User(updateUserReqDto.getUserName());
-
-        this.userService.updateUser(userId, updateUser);
+        this.userService.updateUser(userId, updateUserReqDto);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

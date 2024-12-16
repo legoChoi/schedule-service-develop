@@ -12,7 +12,7 @@ import sparta.scheduleservicedevelop.shared.exception.user.exception.UserNotFoun
 @RestControllerAdvice(assignableTypes = UserController.class)
 public class UserExceptionControllerAdvice {
 
-    @ExceptionHandler
+    @ExceptionHandler(UserPasswordMismatchException.class)
     public ResponseEntity<ExceptionDto> userPasswordMismatchException(UserPasswordMismatchException e) {
         ExceptionDto exceptionDto = new ExceptionDto(e.getErrorCode(), e.getMessage());
 
@@ -21,7 +21,7 @@ public class UserExceptionControllerAdvice {
                 .body(exceptionDto);
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ExceptionDto> userNotFoundException(UserNotFoundException e) {
         ExceptionDto exceptionDto = new ExceptionDto(e.getErrorCode(), e.getMessage());
 
@@ -30,7 +30,7 @@ public class UserExceptionControllerAdvice {
                 .body(exceptionDto);
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(AlreadyExistsUserEmailException.class)
     public ResponseEntity<ExceptionDto> alreadyExistsUserEmailException(AlreadyExistsUserEmailException e) {
         ExceptionDto exceptionDto = new ExceptionDto(e.getErrorCode(), e.getMessage());
 

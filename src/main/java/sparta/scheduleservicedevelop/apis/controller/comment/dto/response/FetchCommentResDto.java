@@ -9,17 +9,17 @@ import java.time.LocalDateTime;
 
 @Getter
 @Builder(access = AccessLevel.PRIVATE)
-public class CreateCommentResDto {
+public class FetchCommentResDto {
 
     private final Long commentId;
     private final Long userId;
     private final Long scheduleId;
     private final String contents;
-    private final LocalDateTime createdAt;
-    private final LocalDateTime updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
-    public static CreateCommentResDto from(Comment comment) {
-        return CreateCommentResDto.builder()
+    public static FetchCommentResDto from(Comment comment) {
+        return FetchCommentResDto.builder()
                 .commentId(comment.getId())
                 .userId(comment.getUser().getId())
                 .scheduleId(comment.getSchedule().getId())

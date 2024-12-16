@@ -4,13 +4,24 @@ import jakarta.servlet.Filter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import sparta.scheduleservicedevelop.shared.Filter.ExceptionFilter;
 import sparta.scheduleservicedevelop.shared.Filter.LoginCheckFilter;
 
 @Configuration
 public class FilterConfig {
 
     @Bean
-    public FilterRegistrationBean<Filter> filterRegistrationBean() {
+    public FilterRegistrationBean<Filter> exceptionFilterRegistrationBean() {
+        FilterRegistrationBean<Filter> filterRegistrationBean = new FilterRegistrationBean<>();
+        filterRegistrationBean.setFilter(new ExceptionFilter());
+        filterRegistrationBean.setOrder(0);
+        filterRegistrationBean.addUrlPatterns("/apis/*");
+
+        return filterRegistrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean<Filter> loginFilterRegistrationBean() {
         FilterRegistrationBean<Filter> filterRegistrationBean = new FilterRegistrationBean<>();
         filterRegistrationBean.setFilter(new LoginCheckFilter());
         filterRegistrationBean.setOrder(1);

@@ -10,7 +10,7 @@ import sparta.scheduleservicedevelop.shared.exception.schedule.exception.Schedul
 @RestControllerAdvice(assignableTypes = ScheduleController.class)
 public class ScheduleExceptionControllerAdvice {
 
-    @ExceptionHandler
+    @ExceptionHandler(ScheduleNotFoundException.class)
     public ResponseEntity<ExceptionDto> emptyScheduleException(ScheduleNotFoundException e) {
         ExceptionDto exceptionDto = new ExceptionDto(e.getErrorCode(), e.getMessage());
 

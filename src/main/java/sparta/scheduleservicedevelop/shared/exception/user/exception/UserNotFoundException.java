@@ -6,10 +6,9 @@ import sparta.scheduleservicedevelop.shared.exception.user.exception.message.Use
 @Getter
 public class UserNotFoundException extends IllegalArgumentException {
 
-    private final int errorCode;
+    private final int errorCode = UserExceptionMessages.USER_NOT_FOUND.getErrorCode();
 
     public UserNotFoundException() {
         super(UserExceptionMessages.USER_NOT_FOUND.getErrorMessage());
-        this.errorCode = UserExceptionMessages.USER_NOT_FOUND.getErrorCode();
     }
 }

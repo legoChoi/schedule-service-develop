@@ -6,10 +6,9 @@ import sparta.scheduleservicedevelop.shared.exception.auth.exception.message.Aut
 @Getter
 public class NotAuthenticatedException extends RuntimeException {
 
-  private final int errorCode;
+  private final int errorCode = AuthExceptionMessages.NOT_AUTHENTICATED_EXCEPTION.getErrorCode();
 
   public NotAuthenticatedException() {
     super(AuthExceptionMessages.NOT_AUTHENTICATED_EXCEPTION.getErrorMessage());
-    this.errorCode = AuthExceptionMessages.NOT_AUTHENTICATED_EXCEPTION.getErrorCode();
   }
 }

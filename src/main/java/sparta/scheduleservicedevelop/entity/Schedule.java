@@ -1,10 +1,7 @@
 package sparta.scheduleservicedevelop.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import sparta.scheduleservicedevelop.shared.entity.BaseTimeEntity;
 
 import java.util.List;
@@ -35,7 +32,9 @@ public class Schedule extends BaseTimeEntity {
     @OneToMany(mappedBy = "schedule")
     private List<Comment> commentList;
 
-    public Schedule(String title, String contents) {
+    @Builder
+    public Schedule(User user, String title, String contents) {
+        this.user = user;
         this.title = title;
         this.contents = contents;
     }

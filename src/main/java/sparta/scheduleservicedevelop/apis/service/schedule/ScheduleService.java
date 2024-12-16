@@ -1,14 +1,15 @@
 package sparta.scheduleservicedevelop.apis.service.schedule;
 
+import sparta.scheduleservicedevelop.apis.controller.schedule.dto.request.CreateScheduleReqDto;
 import sparta.scheduleservicedevelop.apis.controller.schedule.dto.request.UpdateScheduleReqDto;
-import sparta.scheduleservicedevelop.entity.Schedule;
-
-import java.util.List;
+import sparta.scheduleservicedevelop.apis.controller.schedule.dto.response.CreateScheduleResDto;
+import sparta.scheduleservicedevelop.apis.controller.schedule.dto.response.FetchScheduleListResDto;
+import sparta.scheduleservicedevelop.apis.controller.schedule.dto.response.FetchScheduleResDto;
 
 public interface ScheduleService {
-    Schedule save(Long userId, Schedule schedule);
-    Schedule findOneById(Long id);
-    List<Schedule> findAll();
-    void updateById(Long scheduleId, UpdateScheduleReqDto updateScheduleReqDto);
-    void deleteById(Long scheduleId);
+    CreateScheduleResDto createSchedule(Long userId, CreateScheduleReqDto createScheduleReqDto);
+    FetchScheduleResDto fetchOneById(Long id);
+    FetchScheduleListResDto fetchAll();
+    void updateSchedule(Long userId, Long scheduleId, UpdateScheduleReqDto updateScheduleReqDto);
+    void deleteSchedule(Long userId, Long scheduleId);
 }
