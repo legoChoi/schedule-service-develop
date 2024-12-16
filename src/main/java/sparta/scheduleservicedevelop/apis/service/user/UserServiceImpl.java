@@ -3,6 +3,8 @@ package sparta.scheduleservicedevelop.apis.service.user;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sparta.scheduleservicedevelop.apis.controller.user.dto.request.CreateUserReqDto;
+import sparta.scheduleservicedevelop.apis.controller.user.dto.response.CreateUserResDto;
 import sparta.scheduleservicedevelop.entity.User;
 import sparta.scheduleservicedevelop.shared.exception.user.exception.AlreadyExistsUserEmailException;
 import sparta.scheduleservicedevelop.apis.repository.user.UserRepository;
@@ -22,25 +24,27 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User createUser(User user) {
+    public CreateUserResDto createUser(CreateUserReqDto createUserReqDto) {
         // 중복 이메일 검증
-        Optional<User> checkUser = this.userRepository.findByEmail(user.getEmail());
+        Optional<User> checkUser = this.userRepository.findByEmail(createUserReqDto.getEmail());
 
         if (checkUser.isPresent()) {
             throw new AlreadyExistsUserEmailException();
         }
 
-        String rawPassword = user.getPassword();
-        String encodedPassword = passwordEncoder.encode(rawPassword);
+        String rawPassword = createUserReqDto.getPassword();
+        String encodedPassword = this.passwordEncoder.encode(rawPassword);
 
-        User createdUser = new User(
-                user.getUserName(),
-                encodedPassword,
-                user.getEmail()
-        );
+        User user = User.builder()
+                .userName(createUserReqDto.getUserName())
+                .password(encodedPassword)
+                .email(createUserReqDto.getEmail())
+                .build();
 
         // 생성
-        return this.userRepository.save(createdUser);
+        User savedUser = this.userRepository.save(user);
+
+        return CreateUserResDto.from(savedUser);
     }
 
     @Override

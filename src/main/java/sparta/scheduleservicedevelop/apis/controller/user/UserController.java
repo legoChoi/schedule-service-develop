@@ -30,21 +30,7 @@ public class UserController {
     public ResponseEntity<CreateUserResDto> createUser(
             @Valid @RequestBody CreateUserReqDto createUserReqDto
     ) {
-        User user = new User(
-                createUserReqDto.getUserName(),
-                createUserReqDto.getPassword(),
-                createUserReqDto.getEmail()
-        );
-
-        User savedUser = this.userService.createUser(user);
-
-        CreateUserResDto data = new CreateUserResDto(
-                savedUser.getId(),
-                savedUser.getUserName(),
-                savedUser.getEmail(),
-                savedUser.getCreatedAt(),
-                savedUser.getUpdatedAt()
-        );
+        CreateUserResDto data = this.userService.createUser(createUserReqDto);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)

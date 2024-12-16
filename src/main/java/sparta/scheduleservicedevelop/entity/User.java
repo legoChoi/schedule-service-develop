@@ -1,10 +1,7 @@
 package sparta.scheduleservicedevelop.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import sparta.scheduleservicedevelop.shared.entity.BaseTimeEntity;
 
 @Getter
@@ -36,6 +33,7 @@ public class User extends BaseTimeEntity {
         this.email = email;
     }
 
+    @Builder
     public User(String userName, String password, String email) {
         this.userName = userName;
         this.password = password;
