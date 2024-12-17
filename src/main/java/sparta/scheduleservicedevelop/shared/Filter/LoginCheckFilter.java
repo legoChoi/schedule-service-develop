@@ -9,6 +9,8 @@ import sparta.scheduleservicedevelop.shared.exception.auth.exception.NotAuthenti
 import sparta.scheduleservicedevelop.shared.session.SessionTags;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 public class LoginCheckFilter implements Filter {
@@ -19,7 +21,7 @@ public class LoginCheckFilter implements Filter {
     };
 
     private final String[] methodWhiteList = {
-            "PATCH",
+            "POST",
     };
 
     @Override
@@ -28,8 +30,10 @@ public class LoginCheckFilter implements Filter {
         String requestURI = request.getRequestURI();
         String httpMethod = request.getMethod();
 
+        log.info("REQUEST [{}][{}][{}]", httpMethod, requestURI, request.getDispatcherType());
+
         if (!PatternMatchUtils.simpleMatch(uriWhiteList, requestURI)
-                || PatternMatchUtils.simpleMatch(methodWhiteList, httpMethod)) {
+                || !PatternMatchUtils.simpleMatch(methodWhiteList, httpMethod)) {
             validateSession(request);
         }
 
@@ -40,6 +44,7 @@ public class LoginCheckFilter implements Filter {
         HttpSession session = request.getSession(false);
 
         if (session == null || session.getAttribute(SessionTags.LOGIN_USER.getTag()) == null) {
+            log.info("THROW EXCEPTION [{}][{}][{}]", request.getMethod(), request.getRequestURI(), request.getDispatcherType());
             throw new NotAuthenticatedException();
         }
     }

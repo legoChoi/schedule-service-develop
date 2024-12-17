@@ -49,6 +49,9 @@ public class GlobalExceptionControllerAdvice {
         return buildExceptionResponse(e.getErrorCode(), e.getMessage());
     }
 
+    /**
+     * Validation 예외 처리
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ValidExceptionDto> checkValidRequestArgs(MethodArgumentNotValidException e) {
         List<ValidFieldErrorDto> fieldErrors = e.getBindingResult()
