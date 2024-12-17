@@ -4,7 +4,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import sparta.scheduleservicedevelop.shared.exception.auth.exception.NotAuthenticatedException;
 import sparta.scheduleservicedevelop.shared.exception.auth.exception.UnAuthorizedException;
 import sparta.scheduleservicedevelop.shared.exception.comment.exception.CommentNotFoundException;
 import sparta.scheduleservicedevelop.shared.exception.dto.ExceptionDto;
@@ -42,12 +41,6 @@ public class GlobalExceptionControllerAdvice {
 
     @ExceptionHandler(UserPasswordMismatchException.class)
     public ResponseEntity<ExceptionDto> userPasswordMismatchException(UserPasswordMismatchException e) {
-        return buildExceptionResponse(e.getErrorCode(), e.getMessage());
-    }
-
-
-    @ExceptionHandler(NotAuthenticatedException.class)
-    public ResponseEntity<ExceptionDto> notAuthenticatedException(NotAuthenticatedException e) {
         return buildExceptionResponse(e.getErrorCode(), e.getMessage());
     }
 
