@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sparta.scheduleservicedevelop.apis.controller.user.dto.request.CreateUserReqDto;
-import sparta.scheduleservicedevelop.apis.controller.user.dto.request.LoginUserReqDto;
 import sparta.scheduleservicedevelop.apis.controller.user.dto.request.UpdateUserReqDto;
 import sparta.scheduleservicedevelop.apis.controller.user.dto.response.CreateUserResDto;
 import sparta.scheduleservicedevelop.apis.controller.user.dto.response.FetchUserResDto;
@@ -12,7 +11,6 @@ import sparta.scheduleservicedevelop.entity.User;
 import sparta.scheduleservicedevelop.shared.exception.user.exception.AlreadyExistsUserEmailException;
 import sparta.scheduleservicedevelop.apis.repository.user.UserRepository;
 import sparta.scheduleservicedevelop.shared.exception.user.exception.UserNotFoundException;
-import sparta.scheduleservicedevelop.shared.exception.user.exception.UserPasswordMismatchException;
 import sparta.scheduleservicedevelop.shared.tools.bcrypt.Encoder;
 
 import java.util.Optional;
@@ -65,26 +63,6 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(UserNotFoundException::new);
 
         this.userRepository.delete(user);
-    }
-
-    @Override
-    public Long login(LoginUserReqDto loginUserReqDto) {
-        // 조회
-        Optional<User> checkUser = this.userRepository.findByEmail(loginUserReqDto.getEmail());
-
-        // 이메일 검증
-        if (checkUser.isEmpty()) {
-            throw new UserNotFoundException();
-        }
-
-        User findUser = checkUser.get();
-
-        // 비밀번호 검증
-        if (!this.passwordEncoder.matches(loginUserReqDto.getPassword(), findUser.getPassword())) {
-            throw new UserPasswordMismatchException();
-        }
-
-        return findUser.getId();
     }
 
     @Override

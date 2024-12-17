@@ -1,4 +1,4 @@
-package sparta.scheduleservicedevelop.apis.controller.user.dto.request;
+package sparta.scheduleservicedevelop.apis.controller.auth.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
