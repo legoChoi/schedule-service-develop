@@ -15,8 +15,7 @@ public class LoginCheckFilter implements Filter {
 
     private final String[] uriWhiteList = {
             "/apis/users", // 유저 가입
-            "/apis/users/login", // 로그인
-            "/apis/users/logout", // 로그아웃
+            "/apis/auth/**", // 로그인, 로그아웃
     };
 
     private final String[] methodWhiteList = {

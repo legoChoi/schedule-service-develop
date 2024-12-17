@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sparta.scheduleservicedevelop.apis.controller.user.dto.request.CreateUserReqDto;
+import sparta.scheduleservicedevelop.apis.controller.user.dto.request.LoginUserReqDto;
 import sparta.scheduleservicedevelop.apis.controller.user.dto.request.UpdateUserReqDto;
 import sparta.scheduleservicedevelop.apis.controller.user.dto.response.CreateUserResDto;
 import sparta.scheduleservicedevelop.apis.controller.user.dto.response.FetchUserResDto;
@@ -67,9 +68,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User login(User user) {
+    public Long login(LoginUserReqDto loginUserReqDto) {
         // 조회
-        Optional<User> checkUser = this.userRepository.findByEmail(user.getEmail());
+        Optional<User> checkUser = this.userRepository.findByEmail(loginUserReqDto.getEmail());
 
         // 이메일 검증
         if (checkUser.isEmpty()) {
@@ -79,11 +80,11 @@ public class UserServiceImpl implements UserService {
         User findUser = checkUser.get();
 
         // 비밀번호 검증
-        if (!this.passwordEncoder.matches(user.getPassword(), findUser.getPassword())) {
+        if (!this.passwordEncoder.matches(loginUserReqDto.getPassword(), findUser.getPassword())) {
             throw new UserPasswordMismatchException();
         }
 
-        return findUser;
+        return findUser.getId();
     }
 
     @Override

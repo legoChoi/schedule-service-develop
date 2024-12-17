@@ -1,5 +1,6 @@
 package sparta.scheduleservicedevelop.shared.Filter;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,12 +18,14 @@ public class ExceptionFilter implements Filter {
         } catch (NotAuthenticatedException e) {
             response.setStatus(e.getErrorCode());
             response.setContentType("application/json;charset=UTF-8");
-            response.getWriter().write(
-                    new ObjectMapper().writeValueAsString(
-                            new ExceptionDto(
-                                    e.getErrorCode(), e.getMessage())
-                    )
-            );
+            response.getWriter().write(build(e));
         }
+    }
+
+    private String build(NotAuthenticatedException e) throws JsonProcessingException {
+        return new ObjectMapper().writeValueAsString(
+                new ExceptionDto(
+                        e.getErrorCode(), e.getMessage())
+        );
     }
 }
