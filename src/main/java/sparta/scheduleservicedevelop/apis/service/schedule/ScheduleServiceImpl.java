@@ -1,16 +1,18 @@
 package sparta.scheduleservicedevelop.apis.service.schedule;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sparta.scheduleservicedevelop.apis.controller.schedule.dto.request.CreateScheduleReqDto;
 import sparta.scheduleservicedevelop.apis.controller.schedule.dto.request.UpdateScheduleReqDto;
-import sparta.scheduleservicedevelop.apis.controller.schedule.dto.response.CreateScheduleResDto;
-import sparta.scheduleservicedevelop.apis.controller.schedule.dto.response.FetchScheduleListResDto;
-import sparta.scheduleservicedevelop.apis.controller.schedule.dto.response.FetchScheduleResDto;
+import sparta.scheduleservicedevelop.apis.controller.schedule.dto.response.*;
+import sparta.scheduleservicedevelop.apis.repository.schedule.ScheduleRepository;
 import sparta.scheduleservicedevelop.apis.repository.user.UserRepository;
 import sparta.scheduleservicedevelop.entity.Schedule;
-import sparta.scheduleservicedevelop.apis.repository.schedule.ScheduleRepository;
 import sparta.scheduleservicedevelop.entity.User;
 import sparta.scheduleservicedevelop.shared.exception.auth.exception.UnAuthorizedException;
 import sparta.scheduleservicedevelop.shared.exception.schedule.exception.ScheduleNotFoundException;
@@ -18,6 +20,7 @@ import sparta.scheduleservicedevelop.shared.exception.user.exception.UserNotFoun
 
 import java.util.List;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -38,14 +41,14 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .contents(createScheduleReqDto.getContents())
                 .build();
 
-        Schedule savedSchedule = scheduleRepository.save(schedule);
+        Schedule savedSchedule = scheduleRepository.customSave(schedule);
 
         return CreateScheduleResDto.from(savedSchedule);
     }
 
     @Override
     public FetchScheduleResDto fetchOneById(Long id) {
-        Schedule schedule = this.scheduleRepository.findById(id)
+        Schedule schedule = this.scheduleRepository.customFindById(id)
                 .orElseThrow(ScheduleNotFoundException::new);
 
         return FetchScheduleResDto.from(schedule);
@@ -53,7 +56,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public FetchScheduleListResDto fetchAll() {
-        List<Schedule> scheduleList = this.scheduleRepository.findAll();
+        List<Schedule> scheduleList = this.scheduleRepository.customFindAll();
 
         List<FetchScheduleResDto> data = scheduleList.stream()
                 .map(FetchScheduleResDto::from)
@@ -63,9 +66,21 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
+    public PaginateScheduleListResDto fetchAllPaginationWithComments(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "updatedAt");
+        Page<FetchScheduleListJoinResDto> result = this.scheduleRepository.findScheduleAllCountBy(pageRequest);
+
+        return PaginateScheduleListResDto.builder()
+                .totalPages(result.getTotalPages())
+                .totalElements(result.getTotalElements())
+                .data(result.getContent())
+                .build();
+    }
+
+    @Override
     @Transactional
     public void updateSchedule(Long userId, Long scheduleId, UpdateScheduleReqDto updateScheduleReqDto) {
-        Schedule schedule = this.scheduleRepository.findById(scheduleId)
+        Schedule schedule = this.scheduleRepository.customFindById(scheduleId)
                 .orElseThrow(ScheduleNotFoundException::new);
 
         checkAuth(schedule, userId);
@@ -77,12 +92,12 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     @Transactional
     public void deleteSchedule(Long userId, Long scheduleId) {
-        Schedule schedule = this.scheduleRepository.findById(scheduleId)
+        Schedule schedule = this.scheduleRepository.customFindById(scheduleId)
                 .orElseThrow(ScheduleNotFoundException::new);
 
         checkAuth(schedule, userId);
 
-        this.scheduleRepository.delete(schedule);
+        this.scheduleRepository.customDelete(schedule);
     }
 
     /**

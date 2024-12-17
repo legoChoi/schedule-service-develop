@@ -10,12 +10,12 @@ import java.time.LocalDateTime;
 
 @Getter
 public class FetchScheduleResDto {
-    private Long scheduleId;
-    private Long userId;
-    private String title;
-    private String contents;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private final Long scheduleId;
+    private final Long userId;
+    private final String title;
+    private final String contents;
+    private final LocalDateTime createdAt;
+    private final LocalDateTime updatedAt;
 
     @Builder(access = AccessLevel.PRIVATE)
     public FetchScheduleResDto(Long scheduleId, Long userId, String title, String contents, LocalDateTime createdAt, LocalDateTime updatedAt) {

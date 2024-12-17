@@ -1,10 +1,10 @@
 package sparta.scheduleservicedevelop.apis.service.schedule;
 
+import org.springframework.data.domain.PageRequest;
 import sparta.scheduleservicedevelop.apis.controller.schedule.dto.request.CreateScheduleReqDto;
 import sparta.scheduleservicedevelop.apis.controller.schedule.dto.request.UpdateScheduleReqDto;
-import sparta.scheduleservicedevelop.apis.controller.schedule.dto.response.CreateScheduleResDto;
-import sparta.scheduleservicedevelop.apis.controller.schedule.dto.response.FetchScheduleListResDto;
-import sparta.scheduleservicedevelop.apis.controller.schedule.dto.response.FetchScheduleResDto;
+import sparta.scheduleservicedevelop.apis.controller.schedule.dto.response.*;
+
 
 public interface ScheduleService {
     CreateScheduleResDto createSchedule(Long userId, CreateScheduleReqDto createScheduleReqDto);
@@ -12,4 +12,5 @@ public interface ScheduleService {
     FetchScheduleListResDto fetchAll();
     void updateSchedule(Long userId, Long scheduleId, UpdateScheduleReqDto updateScheduleReqDto);
     void deleteSchedule(Long userId, Long scheduleId);
+    PaginateScheduleListResDto fetchAllPaginationWithComments(int page, int size);
 }

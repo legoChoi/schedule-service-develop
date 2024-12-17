@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import sparta.scheduleservicedevelop.shared.entity.BaseTimeEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -30,7 +31,7 @@ public class Schedule extends BaseTimeEntity {
     private User user;
 
     @OneToMany(mappedBy = "schedule")
-    private List<Comment> commentList;
+    private List<Comment> commentList = new ArrayList<>();
 
     @Builder
     public Schedule(User user, String title, String contents) {

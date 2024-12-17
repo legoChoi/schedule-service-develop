@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import sparta.scheduleservicedevelop.apis.controller.schedule.dto.request.CreateScheduleReqDto;
 import sparta.scheduleservicedevelop.apis.controller.schedule.dto.request.UpdateScheduleReqDto;
 import sparta.scheduleservicedevelop.apis.controller.schedule.dto.response.CreateScheduleResDto;
-import sparta.scheduleservicedevelop.apis.controller.schedule.dto.response.FetchScheduleListResDto;
 import sparta.scheduleservicedevelop.apis.controller.schedule.dto.response.FetchScheduleResDto;
+import sparta.scheduleservicedevelop.apis.controller.schedule.dto.response.PaginateScheduleListResDto;
 import sparta.scheduleservicedevelop.apis.service.schedule.ScheduleService;
 import sparta.scheduleservicedevelop.shared.session.SessionUserInfo;
 
@@ -46,8 +46,12 @@ public class ScheduleController {
     }
 
     @GetMapping
-    public ResponseEntity<FetchScheduleListResDto> fetchAll() {
-        FetchScheduleListResDto data = this.scheduleService.fetchAll();
+    public ResponseEntity<PaginateScheduleListResDto> fetchAll(
+            @RequestParam(required = false, defaultValue = "0", value = "page") int page,
+            @RequestParam(required = false, defaultValue = "10", value = "size") int size
+    ) {
+        PaginateScheduleListResDto data
+                = this.scheduleService.fetchAllPaginationWithComments(page, size);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
