@@ -9,13 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sparta.scheduleservicedevelop.apis.controller.user.dto.request.CreateUserReqDto;
-import sparta.scheduleservicedevelop.apis.controller.user.dto.request.LoginUserReqDto;
 import sparta.scheduleservicedevelop.apis.controller.user.dto.request.UpdateUserReqDto;
 import sparta.scheduleservicedevelop.apis.controller.user.dto.response.CreateUserResDto;
 import sparta.scheduleservicedevelop.apis.controller.user.dto.response.FetchUserResDto;
-import sparta.scheduleservicedevelop.entity.User;
 import sparta.scheduleservicedevelop.apis.service.user.UserService;
-import sparta.scheduleservicedevelop.shared.session.SessionTags;
 import sparta.scheduleservicedevelop.shared.session.SessionUserInfo;
 
 @Slf4j
