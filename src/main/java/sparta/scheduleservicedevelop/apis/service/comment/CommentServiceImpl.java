@@ -36,7 +36,7 @@ public class CommentServiceImpl implements CommentService {
         User user = this.userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
-        Schedule schedule = this.scheduleRepository.findById(createCommentReqDto.getScheduleId())
+        Schedule schedule = this.scheduleRepository.customFindById(createCommentReqDto.getScheduleId())
                 .orElseThrow(ScheduleNotFoundException::new);
 
         Comment comment = new Comment(schedule, user, createCommentReqDto.getContents());
