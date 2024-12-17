@@ -8,25 +8,24 @@ import sparta.scheduleservicedevelop.entity.User;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 @RequiredArgsConstructor
-public class UserJpaRepository implements UserRepository {
+public class UserRepositoryImpl implements UserRepositoryCustom {
 
     private final EntityManager entityManager;
 
     @Override
-    public User save(User user) {
+    public User customSave(User user) {
         this.entityManager.persist(user);
         return user;
     }
 
     @Override
-    public Optional<User> findById(Long id) {
+    public Optional<User> customFindById(Long id) {
         return Optional.ofNullable(this.entityManager.find(User.class, id));
     }
 
     @Override
-    public Optional<User> findByEmail(String email) {
+    public Optional<User> customFindByEmail(String email) {
         String jpql = "SELECT u FROM User u WHERE u.email = :email";
         List<User> users = this.entityManager.createQuery(jpql, User.class)
                 .setParameter("email", email)
@@ -36,7 +35,7 @@ public class UserJpaRepository implements UserRepository {
     }
 
     @Override
-    public void delete(User user) {
+    public void customDelete(User user) {
         this.entityManager.remove(user);
     }
 }

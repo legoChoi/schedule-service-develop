@@ -56,6 +56,12 @@ public class UserController {
         Long userId = SessionUserInfo.getId(request);
         this.userService.deleteUser(userId);
 
+        HttpSession session = request.getSession(false);
+
+        if (session != null) {
+            session.invalidate();
+        }
+
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .build();
@@ -79,14 +85,9 @@ public class UserController {
             @RequestBody LoginUserReqDto loginUserReqDto,
             HttpServletRequest request
     ) {
-        User user = new User(
-                loginUserReqDto.getPassword(),
-                loginUserReqDto.getEmail()
-        );
+        Long userId = this.userService.login(loginUserReqDto);
 
-        User login = this.userService.login(user);
-
-        request.getSession().setAttribute(SessionTags.LOGIN_USER.getTag(), login.getId());
+        request.getSession().setAttribute(SessionTags.LOGIN_USER.getTag(), userId);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

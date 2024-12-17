@@ -7,6 +7,7 @@ import sparta.scheduleservicedevelop.shared.entity.BaseTimeEntity;
 @Getter
 @Entity
 @Table(name = "users")
+@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseTimeEntity {
 
@@ -23,15 +24,6 @@ public class User extends BaseTimeEntity {
 
     @Column(unique = true, length = 50, nullable = false)
     private String email;
-
-    public User(String userName) {
-        this.userName = userName;
-    }
-
-    public User(String password, String email) {
-        this.password = password;
-        this.email = email;
-    }
 
     @Builder
     public User(String userName, String password, String email) {
