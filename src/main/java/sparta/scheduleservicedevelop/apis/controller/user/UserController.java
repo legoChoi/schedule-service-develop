@@ -79,33 +79,4 @@ public class UserController {
                 .status(HttpStatus.OK)
                 .build();
     }
-
-    @PostMapping("/login")
-    public ResponseEntity<Void> login(
-            @RequestBody LoginUserReqDto loginUserReqDto,
-            HttpServletRequest request
-    ) {
-        Long userId = this.userService.login(loginUserReqDto);
-
-        request.getSession().setAttribute(SessionTags.LOGIN_USER.getTag(), userId);
-
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .build();
-    }
-
-    @PostMapping("/logout")
-    public ResponseEntity<Void> logout(
-            HttpServletRequest request
-    ) {
-        HttpSession session = request.getSession(false);
-
-        if (session != null) {
-            session.invalidate();
-        }
-
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .build();
-    }
 }
