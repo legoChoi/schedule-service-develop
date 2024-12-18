@@ -15,6 +15,7 @@ import sparta.scheduleservicedevelop.shared.exception.user.exception.AlreadyExis
 import sparta.scheduleservicedevelop.shared.exception.user.exception.UserNotFoundException;
 import sparta.scheduleservicedevelop.shared.exception.user.exception.UserPasswordMismatchException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -23,32 +24,32 @@ public class GlobalExceptionControllerAdvice {
 
     @ExceptionHandler(CommentNotFoundException.class)
     public ResponseEntity<ExceptionDto> commentNotFoundException(CommentNotFoundException e) {
-        return buildExceptionResponse(e.getErrorCode(), e.getMessage());
+        return buildExceptionResponse(e.getClass().getSimpleName(), e.getErrorCode(), e.getMessage());
     }
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ExceptionDto> userNotFoundException(UserNotFoundException e) {
-        return buildExceptionResponse(e.getErrorCode(), e.getMessage());
+        return buildExceptionResponse(e.getClass().getSimpleName(), e.getErrorCode(), e.getMessage());
     }
 
     @ExceptionHandler(ScheduleNotFoundException.class)
     public ResponseEntity<ExceptionDto> scheduleNotFoundException(ScheduleNotFoundException e) {
-        return buildExceptionResponse(e.getErrorCode(), e.getMessage());
+        return buildExceptionResponse(e.getClass().getSimpleName(), e.getErrorCode(), e.getMessage());
     }
 
     @ExceptionHandler(AlreadyExistsUserEmailException.class)
     public ResponseEntity<ExceptionDto> alreadyExistsUserEmailException(AlreadyExistsUserEmailException e) {
-        return buildExceptionResponse(e.getErrorCode(), e.getMessage());
+        return buildExceptionResponse(e.getClass().getSimpleName(), e.getErrorCode(), e.getMessage());
     }
 
     @ExceptionHandler(UserPasswordMismatchException.class)
     public ResponseEntity<ExceptionDto> userPasswordMismatchException(UserPasswordMismatchException e) {
-        return buildExceptionResponse(e.getErrorCode(), e.getMessage());
+        return buildExceptionResponse(e.getClass().getSimpleName(), e.getErrorCode(), e.getMessage());
     }
 
     @ExceptionHandler(UnAuthorizedException.class)
     public ResponseEntity<ExceptionDto> unAuthorizedException(UnAuthorizedException e) {
-        return buildExceptionResponse(e.getErrorCode(), e.getMessage());
+        return buildExceptionResponse(e.getClass().getSimpleName(), e.getErrorCode(), e.getMessage());
     }
 
     /**
@@ -65,17 +66,17 @@ public class GlobalExceptionControllerAdvice {
                         fieldError.getDefaultMessage()
                 ))
                 .toList();
-        log.warn("[{}][{}]", e.getStatusCode().value(), e.getMessage());
+        log.warn("[{}][{}][{}]", e.getStatusCode().value(), e.getMessage(), e.getClass().getSimpleName());
 
         return ResponseEntity
                 .status(e.getStatusCode())
-                .body(new ValidExceptionDto(e.getStatusCode().value(), fieldErrors));
+                .body(new ValidExceptionDto(LocalDateTime.now(), e.getClass().getSimpleName(), e.getStatusCode().value(), fieldErrors));
     }
 
-    private ResponseEntity<ExceptionDto> buildExceptionResponse(int errorCode, String message) {
-        log.warn("[{}][{}]", errorCode, message);
+    private ResponseEntity<ExceptionDto> buildExceptionResponse(String exceptionName, int errorCode, String message) {
+        log.warn("[{}][{}][{}]", errorCode, message, exceptionName);
         return ResponseEntity
                 .status(errorCode)
-                .body(new ExceptionDto(errorCode, message));
+                .body(new ExceptionDto(LocalDateTime.now(), exceptionName, errorCode, message));
     }
 }

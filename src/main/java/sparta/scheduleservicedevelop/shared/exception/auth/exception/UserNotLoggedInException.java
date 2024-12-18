@@ -4,11 +4,11 @@ import lombok.Getter;
 import sparta.scheduleservicedevelop.shared.exception.auth.exception.message.AuthExceptionMessages;
 
 @Getter
-public class NotAuthenticatedException extends RuntimeException {
+public class UserNotLoggedInException extends RuntimeException {
 
   private final int errorCode = AuthExceptionMessages.NOT_AUTHENTICATED_EXCEPTION.getErrorCode();
 
-  public NotAuthenticatedException() {
+  public UserNotLoggedInException() {
     super(AuthExceptionMessages.NOT_AUTHENTICATED_EXCEPTION.getErrorMessage());
   }
 }
