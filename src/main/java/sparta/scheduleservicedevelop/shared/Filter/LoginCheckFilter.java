@@ -5,12 +5,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.PatternMatchUtils;
-import sparta.scheduleservicedevelop.shared.exception.auth.exception.NotAuthenticatedException;
+import sparta.scheduleservicedevelop.shared.exception.auth.exception.UserNotLoggedInException;
 import sparta.scheduleservicedevelop.shared.session.SessionTags;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 
 @Slf4j
 public class LoginCheckFilter implements Filter {
@@ -45,7 +43,7 @@ public class LoginCheckFilter implements Filter {
 
         if (session == null || session.getAttribute(SessionTags.LOGIN_USER.getTag()) == null) {
             log.info("THROW EXCEPTION [{}][{}][{}]", request.getMethod(), request.getRequestURI(), request.getDispatcherType());
-            throw new NotAuthenticatedException();
+            throw new UserNotLoggedInException();
         }
     }
 }
