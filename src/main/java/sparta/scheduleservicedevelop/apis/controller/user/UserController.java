@@ -13,7 +13,7 @@ import sparta.scheduleservicedevelop.apis.controller.user.dto.request.UpdateUser
 import sparta.scheduleservicedevelop.apis.controller.user.dto.response.CreateUserResDto;
 import sparta.scheduleservicedevelop.apis.controller.user.dto.response.FetchUserResDto;
 import sparta.scheduleservicedevelop.apis.service.user.UserService;
-import sparta.scheduleservicedevelop.shared.session.SessionUserInfo;
+import sparta.scheduleservicedevelop.shared.session.SessionUserUtils;
 
 @Slf4j
 @RestController
@@ -38,7 +38,7 @@ public class UserController {
     public ResponseEntity<FetchUserResDto> fetchUser(
             HttpServletRequest request
     ) {
-        Long userId = SessionUserInfo.getId(request);
+        Long userId = SessionUserUtils.getId(request);
         FetchUserResDto data = this.userService.fetchOneById(userId);
 
         return ResponseEntity
@@ -50,7 +50,7 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(
             HttpServletRequest request
     ) {
-        Long userId = SessionUserInfo.getId(request);
+        Long userId = SessionUserUtils.getId(request);
         this.userService.deleteUser(userId);
 
         HttpSession session = request.getSession(false);
@@ -69,7 +69,7 @@ public class UserController {
             @RequestBody UpdateUserReqDto updateUserReqDto,
             HttpServletRequest request
     ) {
-        Long userId = SessionUserInfo.getId(request);
+        Long userId = SessionUserUtils.getId(request);
         this.userService.updateUser(userId, updateUserReqDto);
 
         return ResponseEntity

@@ -3,7 +3,6 @@ package sparta.scheduleservicedevelop.apis.controller.comment;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,9 +12,7 @@ import sparta.scheduleservicedevelop.apis.controller.comment.dto.response.Create
 import sparta.scheduleservicedevelop.apis.controller.comment.dto.response.FetchCommentListResDto;
 import sparta.scheduleservicedevelop.apis.controller.comment.dto.response.FetchCommentResDto;
 import sparta.scheduleservicedevelop.apis.service.comment.CommentService;
-import sparta.scheduleservicedevelop.shared.session.SessionUserInfo;
-
-import java.util.List;
+import sparta.scheduleservicedevelop.shared.session.SessionUserUtils;
 
 @RestController
 @RequestMapping("/apis/comments")
@@ -29,7 +26,7 @@ public class CommentController {
             @Valid @RequestBody CreateCommentReqDto createCommentReqDto,
             HttpServletRequest request
     ) {
-        Long userId = SessionUserInfo.getId(request);
+        Long userId = SessionUserUtils.getId(request);
 
         CreateCommentResDto data = this.commentService.createComment(userId, createCommentReqDto);
 
@@ -65,7 +62,7 @@ public class CommentController {
             @Valid @RequestBody UpdateCommentReqDto commentReqDto,
             HttpServletRequest request
     ) {
-        Long userId = SessionUserInfo.getId(request);
+        Long userId = SessionUserUtils.getId(request);
 
         this.commentService.updateComment(userId, commentId, commentReqDto);
 
@@ -79,7 +76,7 @@ public class CommentController {
             @PathVariable("commentId") Long commentId,
             HttpServletRequest request
     ) {
-        Long userId = SessionUserInfo.getId(request);
+        Long userId = SessionUserUtils.getId(request);
 
         this.commentService.deleteComment(userId, commentId);
 
