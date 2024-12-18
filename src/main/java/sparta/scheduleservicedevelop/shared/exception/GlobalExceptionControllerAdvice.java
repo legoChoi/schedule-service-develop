@@ -1,5 +1,6 @@
 package sparta.scheduleservicedevelop.shared.exception;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,6 +17,7 @@ import sparta.scheduleservicedevelop.shared.exception.user.exception.UserPasswor
 
 import java.util.List;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionControllerAdvice {
 
@@ -63,13 +65,15 @@ public class GlobalExceptionControllerAdvice {
                         fieldError.getDefaultMessage()
                 ))
                 .toList();
+        log.warn("[{}][{}]", e.getStatusCode().value(), e.getMessage());
 
         return ResponseEntity
                 .status(e.getStatusCode())
                 .body(new ValidExceptionDto(e.getStatusCode().value(), fieldErrors));
     }
 
-    private static ResponseEntity<ExceptionDto> buildExceptionResponse(int errorCode, String message) {
+    private ResponseEntity<ExceptionDto> buildExceptionResponse(int errorCode, String message) {
+        log.warn("[{}][{}]", errorCode, message);
         return ResponseEntity
                 .status(errorCode)
                 .body(new ExceptionDto(errorCode, message));

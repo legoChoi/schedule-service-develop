@@ -36,8 +36,6 @@ public class ExceptionFilter implements Filter {
 
     private String build(NotAuthenticatedException e) throws JsonProcessingException {
         return new ObjectMapper().writeValueAsString(
-                new ExceptionDto(
-                        e.getErrorCode(), e.getMessage())
-        );
+                new ExceptionDto(e.getErrorCode(), e.getMessage()));
     }
 }
