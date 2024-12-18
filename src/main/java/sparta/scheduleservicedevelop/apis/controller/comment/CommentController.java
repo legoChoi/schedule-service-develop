@@ -48,7 +48,6 @@ public class CommentController {
 
     @GetMapping
     public ResponseEntity<FetchCommentListResDto> fetchAll() {
-
         FetchCommentListResDto data = this.commentService.fetchAll();
 
         return ResponseEntity

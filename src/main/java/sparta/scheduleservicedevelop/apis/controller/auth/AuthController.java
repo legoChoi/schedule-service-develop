@@ -2,6 +2,7 @@ package sparta.scheduleservicedevelop.apis.controller.auth;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<Void> login(
-            @RequestBody LoginUserReqDto loginUserReqDto,
+            @Valid @RequestBody LoginUserReqDto loginUserReqDto,
             HttpServletRequest request
     ) {
         Long userId = this.authService.login(loginUserReqDto);

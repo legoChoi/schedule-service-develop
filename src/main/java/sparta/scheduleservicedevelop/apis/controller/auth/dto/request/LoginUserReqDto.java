@@ -8,6 +8,7 @@ import lombok.Getter;
 @Getter
 public class LoginUserReqDto {
 
+    @NotBlank @Size(min = 5, max = 50)
     @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
             message = "올바른 이메일 형식이 아닙니다.")
     private String email;
