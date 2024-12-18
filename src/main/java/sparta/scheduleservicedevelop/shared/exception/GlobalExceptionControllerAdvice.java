@@ -1,10 +1,10 @@
 package sparta.scheduleservicedevelop.shared.exception;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import sparta.scheduleservicedevelop.shared.exception.auth.exception.NotAuthenticatedException;
 import sparta.scheduleservicedevelop.shared.exception.auth.exception.UnAuthorizedException;
 import sparta.scheduleservicedevelop.shared.exception.comment.exception.CommentNotFoundException;
 import sparta.scheduleservicedevelop.shared.exception.dto.ExceptionDto;
@@ -17,6 +17,7 @@ import sparta.scheduleservicedevelop.shared.exception.user.exception.UserPasswor
 
 import java.util.List;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionControllerAdvice {
 
@@ -45,17 +46,14 @@ public class GlobalExceptionControllerAdvice {
         return buildExceptionResponse(e.getErrorCode(), e.getMessage());
     }
 
-
-    @ExceptionHandler(NotAuthenticatedException.class)
-    public ResponseEntity<ExceptionDto> notAuthenticatedException(NotAuthenticatedException e) {
-        return buildExceptionResponse(e.getErrorCode(), e.getMessage());
-    }
-
     @ExceptionHandler(UnAuthorizedException.class)
     public ResponseEntity<ExceptionDto> unAuthorizedException(UnAuthorizedException e) {
         return buildExceptionResponse(e.getErrorCode(), e.getMessage());
     }
 
+    /**
+     * Validation 예외 처리
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ValidExceptionDto> checkValidRequestArgs(MethodArgumentNotValidException e) {
         List<ValidFieldErrorDto> fieldErrors = e.getBindingResult()
@@ -67,13 +65,15 @@ public class GlobalExceptionControllerAdvice {
                         fieldError.getDefaultMessage()
                 ))
                 .toList();
+        log.warn("[{}][{}]", e.getStatusCode().value(), e.getMessage());
 
         return ResponseEntity
                 .status(e.getStatusCode())
                 .body(new ValidExceptionDto(e.getStatusCode().value(), fieldErrors));
     }
 
-    private static ResponseEntity<ExceptionDto> buildExceptionResponse(int errorCode, String message) {
+    private ResponseEntity<ExceptionDto> buildExceptionResponse(int errorCode, String message) {
+        log.warn("[{}][{}]", errorCode, message);
         return ResponseEntity
                 .status(errorCode)
                 .body(new ExceptionDto(errorCode, message));
