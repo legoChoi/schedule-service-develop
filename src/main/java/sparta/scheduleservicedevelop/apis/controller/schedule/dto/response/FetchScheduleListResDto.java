@@ -8,6 +8,6 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public class FetchScheduleListResDto {
-    private int count;
-    private List<FetchScheduleResDto> data;
+    private final int count;
+    private final List<FetchScheduleResDto> data;
 }

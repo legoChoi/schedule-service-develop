@@ -8,7 +8,7 @@ import java.util.List;
 @Builder
 public class PaginateScheduleListResDto {
 
-    private int totalPages;
-    private Long totalElements;
-    private List<FetchScheduleListJoinResDto> data;
+    private final int totalPages;
+    private final Long totalElements;
+    private final List<FetchScheduleListJoinResDto> data;
 }
