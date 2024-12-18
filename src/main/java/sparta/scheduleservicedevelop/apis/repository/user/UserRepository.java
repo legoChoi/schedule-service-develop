@@ -5,7 +5,6 @@ import sparta.scheduleservicedevelop.entity.User;
 
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<User, Integer>, UserRepositoryCustom {
-    Optional<User> findById(Long userId);
+public interface UserRepository extends JpaRepository<User, Long>, UserRepositoryCustom {
     Optional<User> findByEmail(String username);
 }

@@ -12,7 +12,7 @@ import sparta.scheduleservicedevelop.apis.controller.schedule.dto.response.Creat
 import sparta.scheduleservicedevelop.apis.controller.schedule.dto.response.FetchScheduleResDto;
 import sparta.scheduleservicedevelop.apis.controller.schedule.dto.response.PaginateScheduleListResDto;
 import sparta.scheduleservicedevelop.apis.service.schedule.ScheduleService;
-import sparta.scheduleservicedevelop.shared.session.SessionUserInfo;
+import sparta.scheduleservicedevelop.shared.session.SessionUserUtils;
 
 @RestController
 @RequestMapping("/apis/schedules")
@@ -26,7 +26,7 @@ public class ScheduleController {
             @Valid @RequestBody CreateScheduleReqDto createScheduleReqDto,
             HttpServletRequest request
     ) {
-        Long userId = SessionUserInfo.getId(request);
+        Long userId = SessionUserUtils.getId(request);
         CreateScheduleResDto data = this.scheduleService.createSchedule(userId, createScheduleReqDto);
 
         return ResponseEntity
@@ -64,7 +64,7 @@ public class ScheduleController {
             @Valid @RequestBody UpdateScheduleReqDto updateScheduleReqDto,
             HttpServletRequest request
     ) {
-        Long userId = SessionUserInfo.getId(request);
+        Long userId = SessionUserUtils.getId(request);
         this.scheduleService.updateSchedule(userId, scheduleId, updateScheduleReqDto);
 
         return ResponseEntity
@@ -77,7 +77,7 @@ public class ScheduleController {
             @PathVariable("scheduleId") Long scheduleId,
             HttpServletRequest request
     ) {
-        Long userId = SessionUserInfo.getId(request);
+        Long userId = SessionUserUtils.getId(request);
         this.scheduleService.deleteSchedule(userId, scheduleId);
 
         return ResponseEntity

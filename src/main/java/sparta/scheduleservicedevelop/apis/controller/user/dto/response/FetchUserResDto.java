@@ -10,11 +10,11 @@ import java.time.LocalDateTime;
 @Getter
 @Builder(access = AccessLevel.PRIVATE)
 public class FetchUserResDto {
-    private Long id;
-    private String userName;
-    private String email;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private final Long id;
+    private final String userName;
+    private final String email;
+    private final LocalDateTime createdAt;
+    private final LocalDateTime updatedAt;
 
     public static FetchUserResDto from(User user) {
         return FetchUserResDto.builder()

@@ -15,8 +15,8 @@ public class FetchCommentResDto {
     private final Long userId;
     private final Long scheduleId;
     private final String contents;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private final LocalDateTime createdAt;
+    private final LocalDateTime updatedAt;
 
     public static FetchCommentResDto from(Comment comment) {
         return FetchCommentResDto.builder()

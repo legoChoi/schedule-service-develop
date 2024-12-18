@@ -8,10 +8,10 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 public class FetchScheduleListJoinResDto {
-    private String title;
-    private String contents;
-    private String userName;
-    private Long commentCount;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private final String title;
+    private final String contents;
+    private final String userName;
+    private final Long commentCount;
+    private final LocalDateTime createdAt;
+    private final LocalDateTime updatedAt;
 }

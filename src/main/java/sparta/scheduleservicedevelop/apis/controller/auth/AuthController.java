@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sparta.scheduleservicedevelop.apis.controller.auth.dto.request.LoginUserReqDto;
 import sparta.scheduleservicedevelop.apis.service.auth.AuthService;
-import sparta.scheduleservicedevelop.shared.session.SessionTags;
+import sparta.scheduleservicedevelop.shared.session.SessionUserUtils;
 
 @RestController
 @RequestMapping("/apis/auth")
@@ -27,7 +27,7 @@ public class AuthController {
     ) {
         Long userId = this.authService.login(loginUserReqDto);
 
-        request.getSession().setAttribute(SessionTags.LOGIN_USER.getTag(), userId);
+        SessionUserUtils.setId(userId, request);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
