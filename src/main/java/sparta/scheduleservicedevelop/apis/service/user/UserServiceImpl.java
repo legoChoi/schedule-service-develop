@@ -33,6 +33,7 @@ public class UserServiceImpl implements UserService {
             throw new AlreadyExistsUserEmailException();
         }
 
+        // 암호화
         String rawPassword = createUserReqDto.getPassword();
         String encodedPassword = this.passwordEncoder.encode(rawPassword);
 
