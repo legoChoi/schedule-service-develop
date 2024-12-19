@@ -10,6 +10,9 @@ import sparta.scheduleservicedevelop.shared.session.SessionTags;
 
 import java.io.IOException;
 
+/**
+ * 인증 체크 필터
+ */
 @Slf4j
 public class LoginCheckFilter implements Filter {
 
@@ -30,6 +33,9 @@ public class LoginCheckFilter implements Filter {
 
         log.info("REQUEST [{}][{}][{}]", httpMethod, requestURI, request.getDispatcherType());
 
+        /**
+         * 화이트 리스트 내의 URI, HTTP Method에 해당하지 않는 요청 처리
+         */
         if (!PatternMatchUtils.simpleMatch(uriWhiteList, requestURI)
                 || !PatternMatchUtils.simpleMatch(methodWhiteList, httpMethod)) {
             validateSession(request);
@@ -38,6 +44,9 @@ public class LoginCheckFilter implements Filter {
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
+    /**
+     * 세션 검증
+     */
     private void validateSession(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
 
