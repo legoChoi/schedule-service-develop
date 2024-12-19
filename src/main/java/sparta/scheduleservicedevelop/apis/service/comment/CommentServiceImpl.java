@@ -33,6 +33,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     public CreateCommentResDto createComment(Long userId, CreateCommentReqDto createCommentReqDto) {
+        // 연관관계 매핑
         User user = this.userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
@@ -41,6 +42,7 @@ public class CommentServiceImpl implements CommentService {
 
         Comment comment = new Comment(schedule, user, createCommentReqDto.getContents());
 
+        // save
         this.commentRepository.save(comment);
 
         return CreateCommentResDto.from(comment);

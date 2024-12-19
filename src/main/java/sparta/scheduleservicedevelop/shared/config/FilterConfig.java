@@ -7,6 +7,9 @@ import org.springframework.context.annotation.Configuration;
 import sparta.scheduleservicedevelop.shared.Filter.ExceptionFilter;
 import sparta.scheduleservicedevelop.shared.Filter.LoginCheckFilter;
 
+/**
+ * 서블릿 필터 사용을 위한 Config
+ */
 @Configuration
 public class FilterConfig {
 

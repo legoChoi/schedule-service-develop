@@ -8,6 +8,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
+/**
+ * 생성일, 수정일을 담는 기본 객체
+ */
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @MappedSuperclass

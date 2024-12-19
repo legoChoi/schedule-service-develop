@@ -32,6 +32,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     @Transactional
     public CreateScheduleResDto createSchedule(Long userId, CreateScheduleReqDto createScheduleReqDto) {
+        // 연관관계 매핑
         User user = this.userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
@@ -41,6 +42,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .contents(createScheduleReqDto.getContents())
                 .build();
 
+        // save
         Schedule savedSchedule = scheduleRepository.customSave(schedule);
 
         return CreateScheduleResDto.from(savedSchedule);

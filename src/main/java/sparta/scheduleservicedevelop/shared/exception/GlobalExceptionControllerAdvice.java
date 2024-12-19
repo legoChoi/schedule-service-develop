@@ -73,6 +73,9 @@ public class GlobalExceptionControllerAdvice {
                 .body(new ValidExceptionDto(LocalDateTime.now(), e.getClass().getSimpleName(), e.getStatusCode().value(), fieldErrors));
     }
 
+    /**
+     * 예외 응답 객체 빌드
+     */
     private ResponseEntity<ExceptionDto> buildExceptionResponse(String exceptionName, int errorCode, String message) {
         log.warn("[{}][{}][{}]", errorCode, message, exceptionName);
         return ResponseEntity

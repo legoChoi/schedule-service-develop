@@ -14,6 +14,9 @@ import sparta.scheduleservicedevelop.shared.exception.dto.ExceptionDto;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
+/**
+ * 필터에서 발생한 예외를 처리하는 필터
+ */
 @Slf4j
 public class ExceptionFilter implements Filter {
 
@@ -37,6 +40,9 @@ public class ExceptionFilter implements Filter {
         }
     }
 
+    /**
+     * 예외 응답 객체 빌드
+     */
     private String build(UserNotLoggedInException e) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());

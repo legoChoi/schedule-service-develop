@@ -9,6 +9,9 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.Locale;
 
+/**
+ * P6Spy 라이브러리 사용을 위한 Config
+ */
 @Configuration
 public class P6SpyConfig implements MessageFormattingStrategy {
 
