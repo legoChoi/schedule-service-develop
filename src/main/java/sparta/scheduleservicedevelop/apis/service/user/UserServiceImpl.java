@@ -27,11 +27,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public CreateUserResDto createUser(CreateUserReqDto createUserReqDto) {
         // 중복 이메일 검증
-        Optional<User> checkUser = this.userRepository.findByEmail(createUserReqDto.getEmail());
-
-        if (checkUser.isPresent()) {
-            throw new AlreadyExistsUserEmailException();
-        }
+        validateExistUserEmail(createUserReqDto);
 
         // 암호화
         String rawPassword = createUserReqDto.getPassword();
@@ -51,27 +47,34 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public FetchUserResDto fetchOneById(Long userId) {
-        User user = this.userRepository.findById(userId)
-                .orElseThrow(UserNotFoundException::new);
-
+        User user = getUserById(userId);
         return FetchUserResDto.from(user);
     }
 
     @Override
     @Transactional
     public void deleteUser(Long userId) {
-        User user = this.userRepository.findById(userId)
-                .orElseThrow(UserNotFoundException::new);
-
+        User user = getUserById(userId);
         this.userRepository.delete(user);
     }
 
     @Override
     @Transactional
     public void updateUser(Long userId, UpdateUserReqDto updateUserReqDto) {
-        User findUser = this.userRepository.findById(userId)
-                .orElseThrow(UserNotFoundException::new);
-
+        User findUser = getUserById(userId);
         findUser.setUserName(updateUserReqDto.getUserName());
+    }
+
+    private void validateExistUserEmail(CreateUserReqDto createUserReqDto) {
+        Optional<User> checkUser = this.userRepository.findByEmail(createUserReqDto.getEmail());
+
+        if (checkUser.isPresent()) {
+            throw new AlreadyExistsUserEmailException();
+        }
+    }
+
+    private User getUserById(Long userId) {
+        return this.userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
     }
 }
