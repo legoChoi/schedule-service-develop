@@ -22,21 +22,19 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public Long login(LoginUserReqDto loginUserReqDto) {
-        // 조회
-        Optional<User> checkUser = this.userRepository.findByEmail(loginUserReqDto.getEmail());
+        User findUser = getUserByEmail(loginUserReqDto);
+        validatePassword(loginUserReqDto, findUser);
+        return findUser.getId();
+    }
 
-        // 이메일 검증
-        if (checkUser.isEmpty()) {
-            throw new UserNotFoundException();
-        }
+    private User getUserByEmail(LoginUserReqDto loginUserReqDto) {
+        return this.userRepository.findByEmail(loginUserReqDto.getEmail())
+                .orElseThrow(UserNotFoundException::new);
+    }
 
-        User findUser = checkUser.get();
-
-        // 비밀번호 검증
+    private void validatePassword(LoginUserReqDto loginUserReqDto, User findUser) {
         if (!this.passwordEncoder.matches(loginUserReqDto.getPassword(), findUser.getPassword())) {
             throw new UserPasswordMismatchException();
         }
-
-        return findUser.getId();
     }
 }
