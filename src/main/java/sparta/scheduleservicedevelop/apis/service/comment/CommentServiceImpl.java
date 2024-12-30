@@ -63,7 +63,7 @@ public class CommentServiceImpl implements CommentService {
     public void updateComment(Long userId, Long commentId, UpdateCommentReqDto commentReqDto) {
         Comment comment = getCommentById(commentId);
         checkAuth(comment, userId);
-        comment.setContents(commentReqDto.getContents());
+        comment.updateContent(commentReqDto.getContents());
     }
 
     @Override
