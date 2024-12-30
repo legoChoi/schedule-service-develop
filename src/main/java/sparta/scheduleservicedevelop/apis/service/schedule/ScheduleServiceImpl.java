@@ -33,13 +33,11 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Transactional
     public CreateScheduleResDto createSchedule(Long userId, CreateScheduleReqDto createScheduleReqDto) {
         User user = getUserById(userId);
-
         Schedule schedule = Schedule.builder()
                 .user(user)
                 .title(createScheduleReqDto.getTitle())
                 .contents(createScheduleReqDto.getContents())
                 .build();
-
         Schedule savedSchedule = scheduleRepository.save(schedule);
         return CreateScheduleResDto.from(savedSchedule);
     }
@@ -75,9 +73,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     public void updateSchedule(Long userId, Long scheduleId, UpdateScheduleReqDto updateScheduleReqDto) {
         Schedule schedule = getScheduleById(scheduleId);
         checkAuth(schedule, userId);
-
-        schedule.setTitle(updateScheduleReqDto.getTitle());
-        schedule.setContents(updateScheduleReqDto.getContents());
+        schedule.updateTitleAndContents(updateScheduleReqDto.getTitle(), updateScheduleReqDto.getContents());
     }
 
     @Override
