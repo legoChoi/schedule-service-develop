@@ -32,9 +32,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     @Transactional
     public CreateScheduleResDto createSchedule(Long userId, CreateScheduleReqDto createScheduleReqDto) {
-        // 연관관계 매핑
-        User user = this.userRepository.findById(userId)
-                .orElseThrow(UserNotFoundException::new);
+        User user = getUserById(userId);
 
         Schedule schedule = Schedule.builder()
                 .user(user)
@@ -42,28 +40,22 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .contents(createScheduleReqDto.getContents())
                 .build();
 
-        // save
-        Schedule savedSchedule = scheduleRepository.customSave(schedule);
-
+        Schedule savedSchedule = scheduleRepository.save(schedule);
         return CreateScheduleResDto.from(savedSchedule);
     }
 
     @Override
     public FetchScheduleResDto fetchOneById(Long id) {
-        Schedule schedule = this.scheduleRepository.customFindById(id)
-                .orElseThrow(ScheduleNotFoundException::new);
-
+        Schedule schedule = getScheduleById(id);
         return FetchScheduleResDto.from(schedule);
     }
 
     @Override
     public FetchScheduleListResDto fetchAll() {
         List<Schedule> scheduleList = this.scheduleRepository.customFindAll();
-
         List<FetchScheduleResDto> data = scheduleList.stream()
                 .map(FetchScheduleResDto::from)
                 .toList();
-
         return new FetchScheduleListResDto(data.size(), data);
     }
 
@@ -71,7 +63,6 @@ public class ScheduleServiceImpl implements ScheduleService {
     public PaginateScheduleListResDto fetchAllPaginationWithComments(int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "updatedAt");
         Page<FetchScheduleListJoinResDto> result = this.scheduleRepository.findScheduleAllCountBy(pageRequest);
-
         return PaginateScheduleListResDto.builder()
                 .totalPages(result.getTotalPages())
                 .totalElements(result.getTotalElements())
@@ -82,9 +73,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     @Transactional
     public void updateSchedule(Long userId, Long scheduleId, UpdateScheduleReqDto updateScheduleReqDto) {
-        Schedule schedule = this.scheduleRepository.customFindById(scheduleId)
-                .orElseThrow(ScheduleNotFoundException::new);
-
+        Schedule schedule = getScheduleById(scheduleId);
         checkAuth(schedule, userId);
 
         schedule.setTitle(updateScheduleReqDto.getTitle());
@@ -94,12 +83,19 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     @Transactional
     public void deleteSchedule(Long userId, Long scheduleId) {
-        Schedule schedule = this.scheduleRepository.customFindById(scheduleId)
-                .orElseThrow(ScheduleNotFoundException::new);
-
+        Schedule schedule = getScheduleById(scheduleId);
         checkAuth(schedule, userId);
-
         this.scheduleRepository.customDelete(schedule);
+    }
+
+    private User getUserById(Long userId) {
+        return this.userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+    }
+
+    private Schedule getScheduleById(Long scheduleId) {
+        return this.scheduleRepository.findById(scheduleId)
+                .orElseThrow(ScheduleNotFoundException::new);
     }
 
     /**
