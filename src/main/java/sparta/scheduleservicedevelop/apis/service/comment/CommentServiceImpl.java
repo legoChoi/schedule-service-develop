@@ -34,59 +34,60 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public CreateCommentResDto createComment(Long userId, CreateCommentReqDto createCommentReqDto) {
         // 연관관계 매핑
-        User user = this.userRepository.findById(userId)
-                .orElseThrow(UserNotFoundException::new);
-
-        Schedule schedule = this.scheduleRepository.customFindById(createCommentReqDto.getScheduleId())
-                .orElseThrow(ScheduleNotFoundException::new);
-
+        User user = getUserById(userId);
+        Schedule schedule = getScheduleById(createCommentReqDto);
         Comment comment = new Comment(schedule, user, createCommentReqDto.getContents());
 
         // save
         this.commentRepository.save(comment);
-
         return CreateCommentResDto.from(comment);
     }
 
     @Override
     public FetchCommentResDto fetchOneById(Long id) {
-        Comment comment = this.commentRepository.findById(id)
-                .orElseThrow(CommentNotFoundException::new);
-
+        Comment comment = getCommentById(id);
         return FetchCommentResDto.from(comment);
     }
 
     @Override
     public FetchCommentListResDto fetchAll() {
         List<Comment> commentList = this.commentRepository.findAll();
-
         List<FetchCommentResDto> data = commentList.stream()
                 .map(FetchCommentResDto::from)
                 .toList();
-
         return new FetchCommentListResDto(data.size(), data);
     }
 
     @Override
     @Transactional
     public void updateComment(Long userId, Long commentId, UpdateCommentReqDto commentReqDto) {
-        Comment comment = this.commentRepository.findById(commentId)
-                .orElseThrow(CommentNotFoundException::new);
-
+        Comment comment = getCommentById(commentId);
         checkAuth(comment, userId);
-
-        comment.setContents(commentReqDto.getContents());
+        comment.updateContent(commentReqDto.getContents());
     }
 
     @Override
     @Transactional
     public void deleteComment(Long userId, Long commentId) {
+        Comment comment = getCommentById(commentId);
+        checkAuth(comment, userId);
+        this.commentRepository.delete(comment);
+    }
+
+    private User getUserById(Long userId) {
+        return this.userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+    }
+
+    private Schedule getScheduleById(CreateCommentReqDto createCommentReqDto) {
+        return this.scheduleRepository.findById(createCommentReqDto.getScheduleId())
+                .orElseThrow(ScheduleNotFoundException::new);
+    }
+
+    private Comment getCommentById(Long commentId) {
         Comment comment = this.commentRepository.findById(commentId)
                 .orElseThrow(CommentNotFoundException::new);
-
-        checkAuth(comment, userId);
-
-        this.commentRepository.delete(comment);
+        return comment;
     }
 
     /**

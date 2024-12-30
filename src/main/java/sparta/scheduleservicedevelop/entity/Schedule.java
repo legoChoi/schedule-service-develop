@@ -17,15 +17,12 @@ public class Schedule extends BaseTimeEntity {
     @Column(name = "schedule_id", nullable = false)
     private Long id;
 
-    @Setter
     @Column(length = 10, nullable = false)
     private String title;
 
-    @Setter
     @Column(length = 200, nullable = false)
     private String contents;
 
-    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -36,6 +33,12 @@ public class Schedule extends BaseTimeEntity {
     @Builder
     public Schedule(User user, String title, String contents) {
         this.user = user;
+        this.title = title;
+        this.contents = contents;
+    }
+
+    // method
+    public void updateTitleAndContents(String title, String contents) {
         this.title = title;
         this.contents = contents;
     }
